@@ -195,12 +195,7 @@ function explore(peripheral) {
                                             try {
                                                 var xt = i++;
                                                 var mt = j++;
-                                                ws.send(JSON.stringify({
-
-                                                }), function () { /* ignore errors */ });
-
-                                                console.log(date);
-                                                date = date || Date.now()
+                                                
                                                 wss.broadcast(JSON.stringify({
                                                     humidity: ecgVal,
                                                     temperature: ecgVal,
