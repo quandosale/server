@@ -86,6 +86,7 @@ function explore(peripheral) {
         process.exit(0);
     });
 
+    console.log('connecting ', peripheral)
     peripheral.connect(function (error) {
         if(error){
             console.log('peripheral connect error', error);
