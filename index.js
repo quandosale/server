@@ -19,6 +19,9 @@ noble.on('stateChange', function (state) {
     }
 })
 var peripheralIndex = 1;
+var processPeripheral = {};
+var connectedIDs = {};
+
 noble.on('discover', function (peripheral) {
 
     // noble.stopScanning();
@@ -59,7 +62,18 @@ noble.on('discover', function (peripheral) {
             // console.log()
             // setTimeout(() => explore(peripheral), peripheralIndex * 3000);
             // peripheralIndex += 1;
-            explore(peripheral);
+            // processPeripheral[peripheral.id] = peripheral;
+            // explore(peripheral);
+
+            if (connectedIDs[peripheral.id] == 'known') {
+                console.log(peripheral.id + ' discovered again');
+            } else {
+                console.log(new Date() + ' ' + peripheral.id + ' discovered first time');
+                connectedIDs[peripheral.id] = 'known';
+                setInterval(() => {
+                    explore(peripheral);
+                }, 1000);
+            }
         }
     }
 
