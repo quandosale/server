@@ -173,26 +173,26 @@ function explore(peripheral) {
                                         var characteristicInfo = '  ' + characteristic.uuid;
                                         if (characteristic.uuid == '1028') {
                                             characteristic.on('data', function (data, isNotification) {
-                                                // for (var i = 0; i < 5; i++) {
-                                                var i = 0;
-                                                var a = data.readUInt8(1 + i * 2) & 0x00FF;
-                                                var b = data.readUInt8(1 + i * 2 + 1) & 0x00FF;
-                                                var ecgVal = a * 256 + b;
-                                                ecgVal = ecgVal & 0x0fff;
-                                                ecgVal = ecgVal * 2400 / 4096;
-                                                // console.log('Ecg : ', ecg, typeof data);
-                                                try {
-                                                    var mt = j++;
-                                                    console.log(ecgVal)
-                                                    wss.broadcast(JSON.stringify({
-                                                        humidity: ecgVal,
-                                                        temperature: ecgVal,
-                                                        time: mt
-                                                    }));
-                                                } catch (err) {
-                                                    console.error(err);
-                                                }
-                                                // }
+                                                for (var i = 0; i < 5; i++) {
+
+                                                    var a = data.readUInt8(1 + i * 2) & 0x00FF;
+                                                    var b = data.readUInt8(1 + i * 2 + 1) & 0x00FF;
+                                                    var ecgVal = a * 256 + b;
+                                                    ecgVal = ecgVal & 0x0fff;
+                                                    ecgVal = ecgVal * 2400 / 4096;
+                                                    // console.log('Ecg : ', ecg, typeof data);
+                                                    try {
+                                                        var mt = j++;
+                                                        console.log(ecgVal)
+                                                        wss.broadcast(JSON.stringify({
+                                                            humidity: ecgVal,
+                                                            temperature: ecgVal,
+                                                            time: mt
+                                                        }));
+                                                    } catch (err) {
+                                                        console.error(err);
+                                                    }
+                                                } // end for i = 5
                                             });
                                             characteristic.subscribe(function (error) {
                                                 console.log('ecg notification on');
