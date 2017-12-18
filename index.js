@@ -195,11 +195,11 @@ function explore(peripheral) {
                                             try {
                                                 var mt = j++;
                                                 console.log(ecgVal)
-                                                wss.broadcast(JSON.stringify({
-                                                    humidity: ecgVal,
-                                                    temperature: ecgVal,
-                                                    time: mt
-                                                }));
+                                                // wss.broadcast(JSON.stringify({
+                                                //     humidity: ecgVal,
+                                                //     temperature: ecgVal,
+                                                //     time: mt
+                                                // }));
                                             } catch (err) {
                                                 console.error(err);
                                             }
