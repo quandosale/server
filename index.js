@@ -33,13 +33,13 @@ var j = 1;
 wss.on('connection', function (ws) {
     var id = setInterval(function () {
 
-        var xt = i++;
-        var mt = j++;
-        ws.send(JSON.stringify({
-            humidity: xt,
-            temperature: mt,
-            time: mt
-        }), function () { /* ignore errors */ });
+        // var xt = i++;
+        // var mt = j++;
+        // ws.send(JSON.stringify({
+        //     humidity: xt,
+        //     temperature: mt,
+        //     time: mt
+        // }), function () { /* ignore errors */ });
     }, 100);
     console.log('started client interval');
     ws.on('close', function () {
