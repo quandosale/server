@@ -195,7 +195,7 @@ function explore(peripheral) {
                                             try {
                                                 var xt = i++;
                                                 var mt = j++;
-                                                
+                                                console.log(ecgVal)
                                                 wss.broadcast(JSON.stringify({
                                                     humidity: ecgVal,
                                                     temperature: ecgVal,
