@@ -1,4 +1,6 @@
-import { setTimeout } from 'timers';
+import {
+    setTimeout
+} from 'timers';
 
 const async = require('async');
 const express = require('express')
@@ -59,7 +61,7 @@ noble.on('discover', function (peripheral) {
             console.log('peripheral with ID ' + peripheral.id + ' found');
             // noble.stopScanning();
             // console.log()
-            setTimeout(explore(peripheral), peripheralIndex * 1000);
+            setTimeout(() => explore(peripheral), peripheralIndex * 1000);
             peripheralIndex += 1;
         }
     }
