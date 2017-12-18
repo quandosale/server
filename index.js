@@ -56,7 +56,7 @@ noble.on('discover', function (peripheral) {
 
     console.log();
     if (localName) {
-        if (localName.toLocaleLowerCase().includes('calm')) {
+        if (localName.toLocaleLowerCase().includes('calm') && !peripheral.id.includes('ce9d676a8bc9')) { // 
             console.log('peripheral with ID ' + peripheral.id + ' found');
             // noble.stopScanning();
             // console.log()
@@ -74,10 +74,11 @@ noble.on('discover', function (peripheral) {
                     peripheral.connect(function (error) {
                         if (error) {
                             console.log('peripheral connect error', error);
-                            if(error.toLocaleLowerCase().includes('already connected')){
-                                console.log('clear Time Interval');
-                                clearTimeout(timeVar);
-                            }
+                            if (error.message)
+                                if (error.message.toLocaleLowerCase().includes('already connected')) {
+                                    console.log('clear Time Interval');
+                                    clearTimeout(timeVar);
+                                }
                             return;
                         }
                         console.log(new Date() + ' ' + peripheral.id + ' connected');
