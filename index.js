@@ -125,11 +125,13 @@ function explore(peripheral) {
                             function (callback) {
                                 var characteristic = characteristics[characteristicIndex];
                                 var characteristicInfo = '  ' + characteristic.uuid;
-                                if(characteristic.uuid == '1028'){
-                                    characteristic.on('data', function(data, isNotification) {
+                                if (characteristic.uuid == '1028') {
+                                    characteristic.on('data', function (data, isNotification) {
                                         console.log('Ecg : ', data.readUInt16(0));
-                                      });
-                              
+                                    });
+                                    characteristic.subscribe(function (error) {
+                                        console.log('battery level notification on');
+                                    });
                                 }
                                 if (characteristic.name) {
                                     characteristicInfo += ' (' + characteristic.name + ')';
@@ -189,7 +191,7 @@ function explore(peripheral) {
                     });
                 },
                 function (err) {
-                    if(err){
+                    if (err) {
                         console.log('line 188 error', err)
                         peripheral.disconnect();
                     }
