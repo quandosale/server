@@ -127,7 +127,7 @@ function explore(peripheral) {
                                 var characteristicInfo = '  ' + characteristic.uuid;
                                 if (characteristic.uuid == '1028') {
                                     characteristic.on('data', function (data, isNotification) {
-                                        console.log('Ecg : ', data.readUInt16(0));
+                                        console.log('Ecg : ', data.readUInt8(0));
                                     });
                                     characteristic.subscribe(function (error) {
                                         console.log('battery level notification on');
