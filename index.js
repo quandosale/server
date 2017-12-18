@@ -125,7 +125,12 @@ function explore(peripheral) {
                             function (callback) {
                                 var characteristic = characteristics[characteristicIndex];
                                 var characteristicInfo = '  ' + characteristic.uuid;
-
+                                if(characteristic.uuid == '1028'){
+                                    characteristic.on('data', function(data, isNotification) {
+                                        console.log('Ecg : ', data.readUInt16(0));
+                                      });
+                              
+                                }
                                 if (characteristic.name) {
                                     characteristicInfo += ' (' + characteristic.name + ')';
                                 }
@@ -184,8 +189,10 @@ function explore(peripheral) {
                     });
                 },
                 function (err) {
-                    console.log('line 179 error', err)
-                    peripheral.disconnect();
+                    if(err){
+                        console.log('line 188 error', err)
+                        peripheral.disconnect();
+                    }
                 }
             );
         });
