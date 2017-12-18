@@ -185,7 +185,8 @@ function explore(peripheral) {
                                 var characteristicInfo = '  ' + characteristic.uuid;
                                 if (characteristic.uuid == '1028') {
                                     characteristic.on('data', function (data, isNotification) {
-                                        for (var i = 0; i < 5; i++) {
+                                        // for (var i = 0; i < 5; i++) {
+                                            var i = 0;
                                             var a = data.readUInt8(1 + i * 2) & 0x00FF;
                                             var b = data.readUInt8(1 + i * 2 + 1) & 0x00FF;
                                             var ecgVal = a * 256 + b;
@@ -205,7 +206,7 @@ function explore(peripheral) {
                                                 console.log(obj);
                                                 console.error(err);
                                             }
-                                        }
+                                        // }
                                     });
                                     characteristic.subscribe(function (error) {
                                         console.log('ecg notification on');
