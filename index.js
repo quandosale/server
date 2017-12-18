@@ -117,7 +117,7 @@ function explore(peripheral) {
                                         console.log('ecg notification on');
                                         console.log();
                                         console.log('scanning...  ' + peripheralIndex);
-                                        setTimeout(() => noble.startScanning(), 3000);
+                                        // setTimeout(() => noble.startScanning(), 3000);
                                     });
                                 }
                                 if (characteristic.name) {
