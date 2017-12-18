@@ -86,6 +86,10 @@ function explore(peripheral) {
     });
 
     peripheral.connect(function (error) {
+        if(error){
+            console.log('peripheral connect error', error);
+
+        }
         peripheral.discoverServices([], function (error, services) {
             var serviceIndex = 0;
 
