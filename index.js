@@ -115,6 +115,9 @@ function explore(peripheral) {
                                     });
                                     characteristic.subscribe(function (error) {
                                         console.log('ecg notification on');
+                                        console.log();
+                                        console.log('scanning...  ' + peripheralIndex);
+                                        noble.startScanning();
                                     });
                                 }
                                 if (characteristic.name) {
