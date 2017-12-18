@@ -18,7 +18,7 @@ noble.on('stateChange', function (state) {
         noble.stopScanning();
     }
 })
-var peripheralIndex = 0;
+var peripheralIndex = 1;
 noble.on('discover', function (peripheral) {
 
     // noble.stopScanning();
