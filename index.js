@@ -2,6 +2,29 @@ const async = require('async');
 const express = require('express')
 const app = express()
 const noble = require('noble');
+const WebSocket = require('ws');
+
+const moment = require('moment');
+const http = require('http');
+const server = http.createServer(app);
+
+const wss = new WebSocket.Server({
+    server
+});
+
+// Broadcast to all.
+wss.broadcast = function broadcast(data) {
+    wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+            try {
+                console.log('sending data ' + data);
+                client.send(data);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    });
+};
 
 noble.on('stateChange', function (state) {
     console.log('stateChange', state);
@@ -57,7 +80,7 @@ noble.on('discover', function (peripheral) {
     console.log();
     if (localName) {
         // if (localName.toLocaleLowerCase().includes('calm') && !peripheral.id.includes('ce9d676a8bc9')) { // 
-        if ( true ) { // 
+        if (true) { // 
             console.log('peripheral with ID ' + peripheral.id + ' found');
             // noble.stopScanning();
             // console.log()
@@ -139,6 +162,16 @@ function explore(peripheral) {
                                         var b = data.readUInt8(1) & 0x00FF;
                                         var ecg = a * 256 + b;
                                         // console.log('Ecg : ', ecg, typeof data);
+                                        try {
+                                            console.log(date);
+                                            date = date || Date.now()
+                                            wss.broadcast(JSON.stringify(Object.assign(obj, {
+                                                time: moment.utc(date).format('YYYY:MM:DD[T]hh:mm:ss')
+                                            })));
+                                        } catch (err) {
+                                            console.log(obj);
+                                            console.error(err);
+                                        }
                                     });
                                     characteristic.subscribe(function (error) {
                                         console.log('ecg notification on');
@@ -218,4 +251,6 @@ function explore(peripheral) {
 app.get('/', (req, res) => {
     res.send('Hello World!');
 })
+
+
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
