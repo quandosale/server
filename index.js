@@ -23,7 +23,6 @@ noble.on('discover', function (peripheral) {
 
     // noble.stopScanning();
 
-    console.log('peripheral with ID ' + peripheral.id + ' found');
     var advertisement = peripheral.advertisement;
 
     var localName = advertisement.localName;
@@ -55,6 +54,7 @@ noble.on('discover', function (peripheral) {
     console.log();
     if (localName) {
         if (localName.toLocaleLowerCase().includes('calm')) {
+            console.log('peripheral with ID ' + peripheral.id + ' found');
             // noble.stopScanning();
             // console.log()
             explore(peripheral);
