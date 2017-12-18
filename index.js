@@ -4,6 +4,8 @@ const app = express()
 const noble = require('noble');
 const WebSocket = require('ws');
 
+var WebSocketServer = require('ws').Server;
+
 const moment = require('moment');
 const http = require('http');
 const server = http.createServer(app);
@@ -25,6 +27,27 @@ wss.broadcast = function broadcast(data) {
         }
     });
 };
+var i = 0;
+var j = 1;
+wss.on('connection', function (ws) {
+    var id = setInterval(function () {
+
+        var xt = i++;
+        var mt = j++;
+        ws.send(JSON.stringify({
+            humidity: xt,
+            temperature: mt,
+            time: mt
+        }), function () { /* ignore errors */ });
+    }, 100);
+    console.log('started client interval');
+    ws.on('close', function () {
+        console.log('stopping client interval');
+        clearInterval(id);
+    });
+});
+app.use(express.static(path.join(__dirname, '/public')));
+server.on('request', app);
 
 noble.on('stateChange', function (state) {
     console.log('stateChange', state);
@@ -158,16 +181,24 @@ function explore(peripheral) {
                                 var characteristicInfo = '  ' + characteristic.uuid;
                                 if (characteristic.uuid == '1028') {
                                     characteristic.on('data', function (data, isNotification) {
-                                        var a = data.readUInt8(0) & 0x00FF;
-                                        var b = data.readUInt8(1) & 0x00FF;
+                                        var a = data.readUInt8(3) & 0x00FF;
+                                        var b = data.readUInt8(4) & 0x00FF;
                                         var ecg = a * 256 + b;
                                         // console.log('Ecg : ', ecg, typeof data);
                                         try {
+                                            var xt = i++;
+                                            var mt = j++;
+                                            ws.send(JSON.stringify({
+
+                                            }), function () { /* ignore errors */ });
+
                                             console.log(date);
                                             date = date || Date.now()
-                                            wss.broadcast(JSON.stringify(Object.assign(obj, {
-                                                time: moment.utc(date).format('YYYY:MM:DD[T]hh:mm:ss')
-                                            })));
+                                            wss.broadcast(JSON.stringify({
+                                                humidity: ecg,
+                                                temperature: mt,
+                                                time: mt
+                                            }));
                                         } catch (err) {
                                             console.log(obj);
                                             console.error(err);
@@ -248,9 +279,9 @@ function explore(peripheral) {
     });
 }
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-})
+// app.get('/', (req, res) => {
+//     res.send('Hello World!');
+// })
 
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
