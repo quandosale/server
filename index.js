@@ -52,25 +52,25 @@ noble.on('discover', function (peripheral) {
     var serviceData = advertisement.serviceData;
     var serviceUuids = advertisement.serviceUuids;
 
-    if (localName) {
-        console.log('  Local Name        = ' + localName);
-    }
+    // if (localName) {
+    //     console.log('  Local Name        = ' + localName);
+    // }
 
-    if (txPowerLevel) {
-        console.log('  TX Power Level    = ' + txPowerLevel);
-    }
+    // if (txPowerLevel) {
+    //     console.log('  TX Power Level    = ' + txPowerLevel);
+    // }
 
-    if (manufacturerData) {
-        console.log('  Manufacturer Data = ' + manufacturerData.toString('hex'));
-    }
+    // if (manufacturerData) {
+    //     console.log('  Manufacturer Data = ' + manufacturerData.toString('hex'));
+    // }
 
-    if (serviceData) {
-        console.log('  Service Data      = ' + serviceData);
-    }
+    // if (serviceData) {
+    //     console.log('  Service Data      = ' + serviceData);
+    // }
 
-    if (serviceUuids) {
-        console.log('  Service UUIDs     = ' + serviceUuids);
-    }
+    // if (serviceUuids) {
+    //     console.log('  Service UUIDs     = ' + serviceUuids);
+    // }
 
     console.log();
     if (localName) {
@@ -140,51 +140,51 @@ function explore(peripheral) {
                                     characteristicInfo += ' (' + characteristic.name + ')';
                                 }
 
-                                async.series([
-                                    function (callback) {
-                                        characteristic.discoverDescriptors(function (error, descriptors) {
-                                            async.detect(
-                                                descriptors,
-                                                function (descriptor, callback) {
-                                                    return callback(descriptor.uuid === '2901');
-                                                },
-                                                function (userDescriptionDescriptor) {
-                                                    if (userDescriptionDescriptor) {
-                                                        userDescriptionDescriptor.readValue(function (error, data) {
-                                                            if (data) {
-                                                                characteristicInfo += ' (' + data.toString() + ')';
-                                                            }
-                                                            callback();
-                                                        });
-                                                    } else {
-                                                        callback();
-                                                    }
-                                                }
-                                            );
-                                        });
-                                    },
-                                    function (callback) {
-                                        characteristicInfo += '\n    properties  ' + characteristic.properties.join(', ');
+                                // async.series([
+                                //     function (callback) {
+                                //         characteristic.discoverDescriptors(function (error, descriptors) {
+                                //             async.detect(
+                                //                 descriptors,
+                                //                 function (descriptor, callback) {
+                                //                     return callback(descriptor.uuid === '2901');
+                                //                 },
+                                //                 function (userDescriptionDescriptor) {
+                                //                     if (userDescriptionDescriptor) {
+                                //                         userDescriptionDescriptor.readValue(function (error, data) {
+                                //                             if (data) {
+                                //                                 characteristicInfo += ' (' + data.toString() + ')';
+                                //                             }
+                                //                             callback();
+                                //                         });
+                                //                     } else {
+                                //                         callback();
+                                //                     }
+                                //                 }
+                                //             );
+                                //         });
+                                //     },
+                                //     function (callback) {
+                                //         characteristicInfo += '\n    properties  ' + characteristic.properties.join(', ');
 
-                                        if (characteristic.properties.indexOf('read') !== -1) {
-                                            characteristic.read(function (error, data) {
-                                                if (data) {
-                                                    var string = data.toString('ascii');
+                                //         if (characteristic.properties.indexOf('read') !== -1) {
+                                //             characteristic.read(function (error, data) {
+                                //                 if (data) {
+                                //                     var string = data.toString('ascii');
 
-                                                    characteristicInfo += '\n    value       ' + data.toString('hex') + ' | \'' + string + '\'';
-                                                }
-                                                callback();
-                                            });
-                                        } else {
-                                            callback();
-                                        }
-                                    },
-                                    function () {
-                                        console.log(characteristicInfo);
-                                        characteristicIndex++;
-                                        callback();
-                                    }
-                                ]);
+                                //                     characteristicInfo += '\n    value       ' + data.toString('hex') + ' | \'' + string + '\'';
+                                //                 }
+                                //                 callback();
+                                //             });
+                                //         } else {
+                                //             callback();
+                                //         }
+                                //     },
+                                //     function () {
+                                //         console.log(characteristicInfo);
+                                //         characteristicIndex++;
+                                //         callback();
+                                //     }
+                                // ]);
                             },
                             function (error) {
                                 serviceIndex++;
