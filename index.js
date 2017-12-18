@@ -82,6 +82,7 @@ function explore(peripheral) {
     console.log('services and characteristics:');
 
     peripheral.on('disconnect', function () {
+        console.log('on Disconnected & exit(0)')
         process.exit(0);
     });
 
@@ -175,6 +176,7 @@ function explore(peripheral) {
                     });
                 },
                 function (err) {
+                    console.log('line 179 error', err)
                     peripheral.disconnect();
                 }
             );
