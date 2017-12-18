@@ -29,12 +29,11 @@ wss.broadcast = function broadcast(data) {
         }
     });
 };
-var i = 0;
 var j = 1;
 wss.on('connection', function (ws) {
     var id = setInterval(function () {
 
-        // var xt = i++;
+        // var xt = j++;
         // var mt = j++;
         // ws.send(JSON.stringify({
         //     humidity: xt,
@@ -194,7 +193,6 @@ function explore(peripheral) {
                                             ecgVal = ecgVal * 2400 / 4096;
                                             // console.log('Ecg : ', ecg, typeof data);
                                             try {
-                                                var xt = i++;
                                                 var mt = j++;
                                                 console.log(ecgVal)
                                                 wss.broadcast(JSON.stringify({
@@ -203,7 +201,6 @@ function explore(peripheral) {
                                                     time: mt
                                                 }));
                                             } catch (err) {
-                                                console.log(obj);
                                                 console.error(err);
                                             }
                                         // }
