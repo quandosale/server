@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.2",
-    "noble": "^1.8.1"
+    "noble": "^1.8.1",
+    "noble-device": "^1.4.1"
   }
 }

@@ -186,13 +186,18 @@ function explore(peripheral) {
 
                                                     var a = data.readUInt8(1 + i * 2) & 0x00FF;
                                                     var b = data.readUInt8(1 + i * 2 + 1) & 0x00FF;
-                                                    var ecgVal = a * 256 + b;
+                                                    var ecgVal = a + b * 256;
+                                                    isSensorDetected = ((ecgVal & 0x8000) != 0);
+
+
                                                     ecgVal = ecgVal & 0x0fff;
                                                     ecgVal = ecgVal * 2400 / 4096;
                                                     // console.log('Ecg : ', ecg, typeof data);
                                                     try {
                                                         var mt = j++;
-                                                        console.log(ecgVal, characteristic.id);
+                                                        if (isSensorDetected) {
+                                                            console.log('isSensorDetected', isSensorDetected, ecgVal)
+                                                        }
                                                         wss.broadcast(JSON.stringify({
                                                             humidity: ecgVal,
                                                             temperature: ecgVal,
