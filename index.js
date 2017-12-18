@@ -113,7 +113,7 @@ noble.on('discover', function (peripheral) {
 
     console.log();
     if (localName) {
-        if (localName.toLocaleLowerCase().includes('calm') ) { // && !peripheral.id.includes('ce9d676a8bc9')
+        if (localName.toLocaleLowerCase().includes('calm')) { // && !peripheral.id.includes('ce9d676a8bc9')
             // if (true) { // 
             console.log('peripheral with ID ' + peripheral.id + ' found');
             // noble.stopScanning();
@@ -192,7 +192,7 @@ function explore(peripheral) {
                                                     // console.log('Ecg : ', ecg, typeof data);
                                                     try {
                                                         var mt = j++;
-                                                        // console.log(ecgVal)
+                                                        console.log(ecgVal, characteristic.id);
                                                         wss.broadcast(JSON.stringify({
                                                             humidity: ecgVal,
                                                             temperature: ecgVal,
