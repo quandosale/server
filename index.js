@@ -57,8 +57,9 @@ noble.on('discover', function (peripheral) {
             console.log('peripheral with ID ' + peripheral.id + ' found');
             // noble.stopScanning();
             // console.log()
-            setTimeout(() => explore(peripheral), peripheralIndex * 3000);
-            peripheralIndex += 1;
+            // setTimeout(() => explore(peripheral), peripheralIndex * 3000);
+            // peripheralIndex += 1;
+            explore(peripheral);
         }
     }
 
