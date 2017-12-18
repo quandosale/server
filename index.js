@@ -129,7 +129,7 @@ function explore(peripheral) {
                                     characteristic.on('data', function (data, isNotification) {
                                         var a = data.readUInt8(0);
                                         var b = data.readUInt8(1);
-                                        var ecg = a + b * 255;
+                                        var ecg = a * 255 + b;
                                         console.log('Ecg : ', ecg);
                                     });
                                     characteristic.subscribe(function (error) {
