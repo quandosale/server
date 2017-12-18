@@ -123,8 +123,15 @@ function explore(peripheral) {
     if (connectedIDs[peripheral.id] == 'known') {
         console.log(peripheral.id + ' discovered again');
     } else {
+
         console.log(new Date() + ' ' + peripheral.id + ' discovered first time');
+        peripheral.on('disconnect', function () {
+            console.log('on Disconnected & exit(0)')
+            // process.exit(0);
+        });
+
         connectedIDs[peripheral.id] = 'known';
+
         var timeVar = setInterval(() => {
             peripheral.connect(function (error) {
                 if (error) {
@@ -137,144 +144,144 @@ function explore(peripheral) {
                     return;
                 }
                 console.log(new Date() + ' ' + peripheral.id + ' connected');
+                //[BEGIN connected]
+                peripheral.discoverServices([], function (error, services) {
+                    var serviceIndex = 0;
+
+                    async.whilst(
+                        function () {
+                            return (serviceIndex < services.length);
+                        },
+                        function (callback) {
+                            var service = services[serviceIndex];
+                            var serviceInfo = service.uuid;
+
+                            if (service.name) {
+                                serviceInfo += ' (' + service.name + ')';
+                            }
+                            console.log('serviceInfo', serviceInfo);
+
+                            service.discoverCharacteristics([], function (error, characteristics) {
+                                var characteristicIndex = 0;
+
+                                async.whilst(
+                                    function () {
+                                        return (characteristicIndex < characteristics.length);
+                                    },
+                                    function (callback) {
+                                        var characteristic = characteristics[characteristicIndex];
+                                        var characteristicInfo = '  ' + characteristic.uuid;
+                                        if (characteristic.uuid == '1028') {
+                                            characteristic.on('data', function (data, isNotification) {
+                                                // for (var i = 0; i < 5; i++) {
+                                                var i = 0;
+                                                var a = data.readUInt8(1 + i * 2) & 0x00FF;
+                                                var b = data.readUInt8(1 + i * 2 + 1) & 0x00FF;
+                                                var ecgVal = a * 256 + b;
+                                                ecgVal = ecgVal & 0x0fff;
+                                                ecgVal = ecgVal * 2400 / 4096;
+                                                // console.log('Ecg : ', ecg, typeof data);
+                                                try {
+                                                    var mt = j++;
+                                                    console.log(ecgVal)
+                                                    wss.broadcast(JSON.stringify({
+                                                        humidity: ecgVal,
+                                                        temperature: ecgVal,
+                                                        time: mt
+                                                    }));
+                                                } catch (err) {
+                                                    console.error(err);
+                                                }
+                                                // }
+                                            });
+                                            characteristic.subscribe(function (error) {
+                                                console.log('ecg notification on');
+                                                console.log();
+                                                console.log('scanning...  ' + peripheralIndex);
+                                                // setTimeout(() => noble.startScanning(), 3000);
+                                            });
+                                        }
+                                        if (characteristic.name) {
+                                            characteristicInfo += ' (' + characteristic.name + ')';
+                                        }
+
+                                        async.series([
+                                            function (callback) {
+                                                characteristic.discoverDescriptors(function (error, descriptors) {
+                                                    async.detect(
+                                                        descriptors,
+                                                        function (descriptor, callback) {
+                                                            return callback(descriptor.uuid === '2901');
+                                                        },
+                                                        function (userDescriptionDescriptor) {
+                                                            if (userDescriptionDescriptor) {
+                                                                userDescriptionDescriptor.readValue(function (error, data) {
+                                                                    if (data) {
+                                                                        characteristicInfo += ' (' + data.toString() + ')';
+                                                                    }
+                                                                    callback();
+                                                                });
+                                                            } else {
+                                                                callback();
+                                                            }
+                                                        }
+                                                    );
+                                                });
+                                            },
+                                            function (callback) {
+                                                characteristicInfo += '\n    properties  ' + characteristic.properties.join(', ');
+
+                                                if (characteristic.properties.indexOf('read') !== -1) {
+                                                    characteristic.read(function (error, data) {
+                                                        if (data) {
+                                                            var string = data.toString('ascii');
+
+                                                            characteristicInfo += '\n    value       ' + data.toString('hex') + ' | \'' + string + '\'';
+                                                        }
+                                                        callback();
+                                                    });
+                                                } else {
+                                                    callback();
+                                                }
+                                            },
+                                            function () {
+                                                // console.log(characteristicInfo);
+                                                characteristicIndex++;
+                                                callback();
+                                            }
+                                        ]);
+                                    },
+                                    function (error) {
+                                        serviceIndex++;
+                                        callback();
+                                    }
+                                );
+                            });
+                        },
+                        function (err) {
+                            if (err) {
+                                console.log('line 188 error', err)
+                                peripheral.disconnect();
+                            }
+                        }
+                    );
+                });
+                //[END connected]
             });
         }, 1000);
     }
     console.log('services and characteristics:');
 
-    peripheral.on('disconnect', function () {
-        console.log('on Disconnected & exit(0)')
-        // process.exit(0);
-    });
+
 
     console.log('connecting with', peripheral.id)
-    peripheral.connect(function (error) {
-        if (error) {
-            console.log('peripheral connect error', error);
+    // peripheral.connect(function (error) {
+    //     if (error) {
+    //         console.log('peripheral connect error', error);
 
-        }
-        peripheral.discoverServices([], function (error, services) {
-            var serviceIndex = 0;
+    //     }
 
-            async.whilst(
-                function () {
-                    return (serviceIndex < services.length);
-                },
-                function (callback) {
-                    var service = services[serviceIndex];
-                    var serviceInfo = service.uuid;
-
-                    if (service.name) {
-                        serviceInfo += ' (' + service.name + ')';
-                    }
-                    console.log('serviceInfo', serviceInfo);
-
-                    service.discoverCharacteristics([], function (error, characteristics) {
-                        var characteristicIndex = 0;
-
-                        async.whilst(
-                            function () {
-                                return (characteristicIndex < characteristics.length);
-                            },
-                            function (callback) {
-                                var characteristic = characteristics[characteristicIndex];
-                                var characteristicInfo = '  ' + characteristic.uuid;
-                                if (characteristic.uuid == '1028') {
-                                    characteristic.on('data', function (data, isNotification) {
-                                        // for (var i = 0; i < 5; i++) {
-                                        var i = 0;
-                                        var a = data.readUInt8(1 + i * 2) & 0x00FF;
-                                        var b = data.readUInt8(1 + i * 2 + 1) & 0x00FF;
-                                        var ecgVal = a * 256 + b;
-                                        ecgVal = ecgVal & 0x0fff;
-                                        ecgVal = ecgVal * 2400 / 4096;
-                                        // console.log('Ecg : ', ecg, typeof data);
-                                        try {
-                                            var mt = j++;
-                                            console.log(ecgVal)
-                                            wss.broadcast(JSON.stringify({
-                                                humidity: ecgVal,
-                                                temperature: ecgVal,
-                                                time: mt
-                                            }));
-                                        } catch (err) {
-                                            console.error(err);
-                                        }
-                                        // }
-                                    });
-                                    characteristic.subscribe(function (error) {
-                                        console.log('ecg notification on');
-                                        console.log();
-                                        console.log('scanning...  ' + peripheralIndex);
-                                        // setTimeout(() => noble.startScanning(), 3000);
-                                    });
-                                }
-                                if (characteristic.name) {
-                                    characteristicInfo += ' (' + characteristic.name + ')';
-                                }
-
-                                async.series([
-                                    function (callback) {
-                                        characteristic.discoverDescriptors(function (error, descriptors) {
-                                            async.detect(
-                                                descriptors,
-                                                function (descriptor, callback) {
-                                                    return callback(descriptor.uuid === '2901');
-                                                },
-                                                function (userDescriptionDescriptor) {
-                                                    if (userDescriptionDescriptor) {
-                                                        userDescriptionDescriptor.readValue(function (error, data) {
-                                                            if (data) {
-                                                                characteristicInfo += ' (' + data.toString() + ')';
-                                                            }
-                                                            callback();
-                                                        });
-                                                    } else {
-                                                        callback();
-                                                    }
-                                                }
-                                            );
-                                        });
-                                    },
-                                    function (callback) {
-                                        characteristicInfo += '\n    properties  ' + characteristic.properties.join(', ');
-
-                                        if (characteristic.properties.indexOf('read') !== -1) {
-                                            characteristic.read(function (error, data) {
-                                                if (data) {
-                                                    var string = data.toString('ascii');
-
-                                                    characteristicInfo += '\n    value       ' + data.toString('hex') + ' | \'' + string + '\'';
-                                                }
-                                                callback();
-                                            });
-                                        } else {
-                                            callback();
-                                        }
-                                    },
-                                    function () {
-                                        // console.log(characteristicInfo);
-                                        characteristicIndex++;
-                                        callback();
-                                    }
-                                ]);
-                            },
-                            function (error) {
-                                serviceIndex++;
-                                callback();
-                            }
-                        );
-                    });
-                },
-                function (err) {
-                    if (err) {
-                        console.log('line 188 error', err)
-                        peripheral.disconnect();
-                    }
-                }
-            );
-        });
-    });
+    // });
 }
 
 // app.get('/', (req, res) => {
