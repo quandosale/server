@@ -105,8 +105,8 @@ noble.on('discover', function (peripheral) {
 
     console.log();
     if (localName) {
-        // if (localName.toLocaleLowerCase().includes('calm') && !peripheral.id.includes('ce9d676a8bc9')) { // 
-        if (true) { // 
+        if (localName.toLocaleLowerCase().includes('calm') && !peripheral.id.includes('ce9d676a8bc9')) { // 
+        // if (true) { // 
             console.log('peripheral with ID ' + peripheral.id + ' found');
             // noble.stopScanning();
             // console.log()
