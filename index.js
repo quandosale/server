@@ -21,7 +21,7 @@ wss.broadcast = function broadcast(data) {
 
         if (client.readyState === WebSocket.OPEN) {
             try {
-                console.log('sending data ' + data);
+                // console.log('sending data ' + data);
                 client.send(data);
             } catch (e) {
                 console.error(e);
@@ -183,7 +183,7 @@ function explore(peripheral) {
                                                     // console.log('Ecg : ', ecg, typeof data);
                                                     try {
                                                         var mt = j++;
-                                                        console.log(ecgVal)
+                                                        // console.log(ecgVal)
                                                         wss.broadcast(JSON.stringify({
                                                             humidity: ecgVal,
                                                             temperature: ecgVal,
