@@ -74,7 +74,9 @@ noble.on('discover', function (peripheral) {
     console.log();
     if (localName) {
         if (localName.toLocaleLowerCase().includes('calm')) {
+            noble.stopScanning();
             explore(peripheral);
+
         }
     }
 
