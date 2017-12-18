@@ -9,10 +9,10 @@ var WebSocketServer = require('ws').Server;
 
 const moment = require('moment');
 const http = require('http');
-const server = http.createServer(app);
+var server = require('http').createServer();
 
-const wss = new WebSocket.Server({
-    server
+var wss = new WebSocketServer({
+    server: server
 });
 
 // Broadcast to all.
