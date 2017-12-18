@@ -69,7 +69,7 @@ $(document).ready(function () {
   var host = window.document.location.host.replace(/:.*/, '');
   var ws = new WebSocket('ws://' + host + ":8080");
   ws.onopen = function () {
-    console.log('Successfully connect WebSocket');
+    console.log('Successfully connect WebSocket ');
   }
   ws.onmessage = function (message) {
     console.log('receive message' + message.data);
