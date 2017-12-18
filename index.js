@@ -133,7 +133,7 @@ function explore(peripheral) {
                                         // console.log('Ecg : ', ecg, typeof data);
                                     });
                                     characteristic.subscribe(function (error) {
-                                        console.log('battery level notification on');
+                                        console.log('ecg notification on');
                                     });
                                 }
                                 if (characteristic.name) {
@@ -180,7 +180,7 @@ function explore(peripheral) {
                                         }
                                     },
                                     function () {
-                                        console.log(characteristicInfo);
+                                        // console.log(characteristicInfo);
                                         characteristicIndex++;
                                         callback();
                                     }
