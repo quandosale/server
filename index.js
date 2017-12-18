@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
             // scan for all services (uses more time and power).
             //
             console.log('scanning...');
-            noble.startScanning([pizzaServiceUuid], false);
+            noble.startScanning();
         } else {
             console.log('stopScanning...');
             noble.stopScanning();
