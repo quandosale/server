@@ -4,8 +4,7 @@ $(document).ready(function () {
     humidityData = [];
   var data = {
     labels: timeData,
-    datasets: [
-      {
+    datasets: [{
         fill: false,
         label: 'Temperature',
         yAxisID: 'Temperature',
@@ -46,27 +45,29 @@ $(document).ready(function () {
         },
         position: 'left',
       }, {
-          id: 'Humidity',
-          type: 'linear',
-          scaleLabel: {
-            labelString: 'Humidity(%)',
-            display: true
-          },
-          position: 'right'
-        }]
+        id: 'Humidity',
+        type: 'linear',
+        scaleLabel: {
+          labelString: 'Humidity(%)',
+          display: true
+        },
+        position: 'right'
+      }]
     }
   }
 
   //Get the context of the canvas element we want to select
   var ctx = document.getElementById("myChart").getContext("2d");
-  var optionsNoAnimation = { animation: false }
+  var optionsNoAnimation = {
+    animation: false
+  }
   var myLineChart = new Chart(ctx, {
     type: 'line',
     data: data,
     options: basicOption
   });
-
-  var ws = new WebSocket('wss://' + location.host);
+  var host = window.document.location.host.replace(/:.*/, '');
+  var ws = new WebSocket('ws://' + host + ":8080");
   ws.onopen = function () {
     console.log('Successfully connect WebSocket');
   }
@@ -74,7 +75,7 @@ $(document).ready(function () {
     console.log('receive message' + message.data);
     try {
       var obj = JSON.parse(message.data);
-      if(!obj.time || !obj.temperature) {
+      if (!obj.time || !obj.temperature) {
         return;
       }
       timeData.push(obj.time);
