@@ -72,8 +72,12 @@ noble.on('discover', function (peripheral) {
     }
 
     console.log();
+    if (localName) {
+        if (localName.toLocaleLowerCase().includes('calm')) {
+            explore(peripheral);
+        }
+    }
 
-    explore(peripheral);
 
 });
 
@@ -88,7 +92,7 @@ function explore(peripheral) {
 
     console.log('connecting ', peripheral)
     peripheral.connect(function (error) {
-        if(error){
+        if (error) {
             console.log('peripheral connect error', error);
 
         }
