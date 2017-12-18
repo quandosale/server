@@ -70,10 +70,14 @@ noble.on('discover', function (peripheral) {
             } else {
                 console.log(new Date() + ' ' + peripheral.id + ' discovered first time');
                 connectedIDs[peripheral.id] = 'known';
-                setInterval(() => {
+                var timeVar = setInterval(() => {
                     peripheral.connect(function (error) {
                         if (error) {
                             console.log('peripheral connect error', error);
+                            if(error.toLocaleLowerCase().includes('already connected')){
+                                console.log('clear Time Interval');
+                                clearTimeout(timeVar);
+                            }
                             return;
                         }
                         console.log(new Date() + ' ' + peripheral.id + ' connected');
