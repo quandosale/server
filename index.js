@@ -76,6 +76,7 @@ noble.on('discover', function (peripheral) {
     if (localName) {
         if (localName.toLocaleLowerCase().includes('calm')) {
             // noble.stopScanning();
+            // console.log()
             explore(peripheral);
         }
     }
@@ -129,7 +130,7 @@ function explore(peripheral) {
                                         var a = data.readUInt8(0) & 0x00FF;
                                         var b = data.readUInt8(1) & 0x00FF;
                                         var ecg = a * 256 + b;
-                                        console.log('Ecg : ', ecg, typeof data);
+                                        // console.log('Ecg : ', ecg, typeof data);
                                     });
                                     characteristic.subscribe(function (error) {
                                         console.log('battery level notification on');
