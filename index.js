@@ -70,7 +70,7 @@ function explore(peripheral) {
 
     peripheral.on('disconnect', function () {
         console.log('on Disconnected & exit(0)')
-        process.exit(0);
+        // process.exit(0);
     });
 
     console.log('connecting with', peripheral.id)
