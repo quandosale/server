@@ -18,6 +18,7 @@ const wss = new WebSocket.Server({
 // Broadcast to all.
 wss.broadcast = function broadcast(data) {
     wss.clients.forEach(function each(client) {
+        
         if (client.readyState === WebSocket.OPEN) {
             try {
                 console.log('sending data ' + data);
