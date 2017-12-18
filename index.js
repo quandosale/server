@@ -76,7 +76,7 @@ noble.on('discover', function (peripheral) {
                             console.log('peripheral connect error', error);
                             if (error.message)
                                 if (error.message.toLocaleLowerCase().includes('already connected')) {
-                                    console.log('clear Time Interval');
+                                    console.log('clear Time Interval, unneccessory repeat');
                                     clearTimeout(timeVar);
                                 }
                             return;
