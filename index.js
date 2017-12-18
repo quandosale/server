@@ -40,7 +40,7 @@ noble.on('stateChange', function (state) {
 
 noble.on('discover', function (peripheral) {
     
-        noble.stopScanning();
+        // noble.stopScanning();
 
         console.log('peripheral with ID ' + peripheral.id + ' found');
         var advertisement = peripheral.advertisement;
