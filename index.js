@@ -71,6 +71,14 @@ var peripheralIndex = 1;
 var processPeripheral = {};
 var connectedIDs = {};
 
+noble.on('scanStart', function () {
+    console.log('on scanStart');
+});
+
+noble.on('scanStop', function () {
+    console.log('on scanStop');
+});
+
 noble.on('discover', function (peripheral) {
 
     // noble.stopScanning();
@@ -183,7 +191,7 @@ function explore(peripheral) {
                                                     // console.log('Ecg : ', ecg, typeof data);
                                                     try {
                                                         var mt = j++;
-                                                        console.log(ecgVal)
+                                                        // console.log(ecgVal)
                                                         wss.broadcast(JSON.stringify({
                                                             humidity: ecgVal,
                                                             temperature: ecgVal,
