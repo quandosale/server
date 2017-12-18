@@ -1,7 +1,3 @@
-import {
-    setTimeout
-} from 'timers';
-
 const async = require('async');
 const express = require('express')
 const app = express()
