@@ -183,7 +183,7 @@ function explore(peripheral) {
                                                     // console.log('Ecg : ', ecg, typeof data);
                                                     try {
                                                         var mt = j++;
-                                                        // console.log(ecgVal)
+                                                        console.log(ecgVal)
                                                         wss.broadcast(JSON.stringify({
                                                             humidity: ecgVal,
                                                             temperature: ecgVal,
