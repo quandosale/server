@@ -18,7 +18,7 @@ var wss = new WebSocketServer({
 // Broadcast to all.
 wss.broadcast = function broadcast(data) {
     wss.clients.forEach(function each(client) {
-        
+
         if (client.readyState === WebSocket.OPEN) {
             try {
                 console.log('sending data ' + data);
@@ -106,43 +106,40 @@ noble.on('discover', function (peripheral) {
     console.log();
     if (localName) {
         if (localName.toLocaleLowerCase().includes('calm') && !peripheral.id.includes('ce9d676a8bc9')) { // 
-        // if (true) { // 
+            // if (true) { // 
             console.log('peripheral with ID ' + peripheral.id + ' found');
             // noble.stopScanning();
             // console.log()
             // setTimeout(() => explore(peripheral), peripheralIndex * 3000);
             // peripheralIndex += 1;
             // processPeripheral[peripheral.id] = peripheral;
-            // explore(peripheral);
-
-            if (connectedIDs[peripheral.id] == 'known') {
-                console.log(peripheral.id + ' discovered again');
-            } else {
-                console.log(new Date() + ' ' + peripheral.id + ' discovered first time');
-                connectedIDs[peripheral.id] = 'known';
-                var timeVar = setInterval(() => {
-                    peripheral.connect(function (error) {
-                        if (error) {
-                            console.log('peripheral connect error', error);
-                            if (error.message)
-                                if (error.message.toLocaleLowerCase().includes('already connected')) {
-                                    console.log('clear Time Interval, unneccessory repeat');
-                                    clearTimeout(timeVar);
-                                }
-                            return;
-                        }
-                        console.log(new Date() + ' ' + peripheral.id + ' connected');
-                    });
-                }, 1000);
-            }
+            explore(peripheral);
         }
     }
-
-
 });
 
 
 function explore(peripheral) {
+    if (connectedIDs[peripheral.id] == 'known') {
+        console.log(peripheral.id + ' discovered again');
+    } else {
+        console.log(new Date() + ' ' + peripheral.id + ' discovered first time');
+        connectedIDs[peripheral.id] = 'known';
+        var timeVar = setInterval(() => {
+            peripheral.connect(function (error) {
+                if (error) {
+                    console.log('peripheral connect error', error);
+                    if (error.message)
+                        if (error.message.toLocaleLowerCase().includes('already connected')) {
+                            console.log('clear Time Interval, unneccessory repeat');
+                            clearTimeout(timeVar);
+                        }
+                    return;
+                }
+                console.log(new Date() + ' ' + peripheral.id + ' connected');
+            });
+        }, 1000);
+    }
     console.log('services and characteristics:');
 
     peripheral.on('disconnect', function () {
@@ -185,24 +182,24 @@ function explore(peripheral) {
                                 if (characteristic.uuid == '1028') {
                                     characteristic.on('data', function (data, isNotification) {
                                         // for (var i = 0; i < 5; i++) {
-                                            var i = 0;
-                                            var a = data.readUInt8(1 + i * 2) & 0x00FF;
-                                            var b = data.readUInt8(1 + i * 2 + 1) & 0x00FF;
-                                            var ecgVal = a * 256 + b;
-                                            ecgVal = ecgVal & 0x0fff;
-                                            ecgVal = ecgVal * 2400 / 4096;
-                                            // console.log('Ecg : ', ecg, typeof data);
-                                            try {
-                                                var mt = j++;
-                                                console.log(ecgVal)
-                                                // wss.broadcast(JSON.stringify({
-                                                //     humidity: ecgVal,
-                                                //     temperature: ecgVal,
-                                                //     time: mt
-                                                // }));
-                                            } catch (err) {
-                                                console.error(err);
-                                            }
+                                        var i = 0;
+                                        var a = data.readUInt8(1 + i * 2) & 0x00FF;
+                                        var b = data.readUInt8(1 + i * 2 + 1) & 0x00FF;
+                                        var ecgVal = a * 256 + b;
+                                        ecgVal = ecgVal & 0x0fff;
+                                        ecgVal = ecgVal * 2400 / 4096;
+                                        // console.log('Ecg : ', ecg, typeof data);
+                                        try {
+                                            var mt = j++;
+                                            console.log(ecgVal)
+                                            wss.broadcast(JSON.stringify({
+                                                humidity: ecgVal,
+                                                temperature: ecgVal,
+                                                time: mt
+                                            }));
+                                        } catch (err) {
+                                            console.error(err);
+                                        }
                                         // }
                                     });
                                     characteristic.subscribe(function (error) {
