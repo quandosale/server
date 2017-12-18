@@ -6,15 +6,24 @@ var noble = require('noble');
 
 app.get('/', (req, res) => {
     noble.on('stateChange', function (state) {
+        console.log('stateChange', state);
         if (state === 'poweredOn') {
-            noble.startScanning();
+            //
+            // Once the BLE radio has been powered on, it is possible
+            // to begin scanning for services. Pass an empty array to
+            // scan for all services (uses more time and power).
+            //
+            console.log('scanning...');
+            noble.startScanning([pizzaServiceUuid], false);
         } else {
+            console.log('stopScanning...');
             noble.stopScanning();
         }
-    });
-    // res.send('Hello World!');
+    })
+    res.send('Hello World!');
 })
 noble.on('stateChange', function (state) {
+    console.log('stateChange', state);
     if (state === 'poweredOn') {
         //
         // Once the BLE radio has been powered on, it is possible
@@ -24,12 +33,13 @@ noble.on('stateChange', function (state) {
         console.log('scanning...');
         noble.startScanning([pizzaServiceUuid], false);
     } else {
+        console.log('stopScanning...');
         noble.stopScanning();
     }
 })
 
 noble.on('discover', function (peripheral) {
-    if (peripheral.id === peripheralIdOrAddress || peripheral.address === peripheralIdOrAddress) {
+    
         noble.stopScanning();
 
         console.log('peripheral with ID ' + peripheral.id + ' found');
@@ -64,6 +74,6 @@ noble.on('discover', function (peripheral) {
         console.log();
 
         explore(peripheral);
-    }
+    
 });
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
