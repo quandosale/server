@@ -33,7 +33,7 @@ YourThing.discoverAll(function (yourThingInstance) {
             console.log('got data: ' + data);
         });
 
-        yourThingInstance.notifyCharacteristic(YOUR_THING_SERVICE_UUID, YOUR_THING_NOTIFY_CHAR, YourThing, yourThingInstance.onNotifyed, function (err) {
+        yourThingInstance.notifyCharacteristic(YOUR_THING_SERVICE_UUID, YOUR_THING_NOTIFY_CHAR, YourThing, (data, isNotify, err) => func(yourThingInstance, data, isNotify, err), function (err) {
             // callback(err);
         });
 
@@ -41,3 +41,6 @@ YourThing.discoverAll(function (yourThingInstance) {
     });
 
 });
+const func = (thing, data, isNotify, err) => {
+    console.log(thing.id, data);
+}

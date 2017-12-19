@@ -22,7 +22,7 @@ YourThing.is = function (peripheral) {
 };
 
 YourThing.prototype.onNotifyed = function (data, isNotify, err) {
-    console.log('onNotifyed ', this.id, data, isNotify, err);
+    // console.log('onNotifyed ', this.id, data, isNotify, err);
 };
 
 
