@@ -1,8 +1,6 @@
-var async = require('async');
-
 var NobleDevice = require('noble-device');
 
-var idOrLocalName = process.argv[2];
+var idOrLocalName = 'CALM_ECG';//process.argv[2];
 
 if (!idOrLocalName) {
   console.log("node hrm-device.js [ID or local name]");
