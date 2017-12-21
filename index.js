@@ -148,7 +148,7 @@ function explore(peripheral) {
                     if (error.message)
                         if (error.message.toLocaleLowerCase().includes('already connected')) {
                             console.log('clear Time Interval, unneccessory repeat');
-                            clearInterval(timeVar);
+                            // clearInterval(timeVar);
                         }
                     return;
                 }
@@ -203,7 +203,7 @@ function explore(peripheral) {
                                                     try {
                                                         var mt = j++;
                                                         // if (characteristic._peripheralId == "f2b70e1995e0") {
-                                                        console.log('isSensorDetected', mt, characteristic._peripheralId, isSensorDetected, ecgVal);
+                                                        // console.log('isSensorDetected', mt, characteristic._peripheralId, isSensorDetected, ecgVal);
                                                         // }
                                                         wss.broadcast(JSON.stringify({
                                                             humidity: ecgVal,
