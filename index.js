@@ -187,7 +187,7 @@ function explore(peripheral) {
                                                     var a = data.readUInt8(1 + i * 2) & 0x00FF;
                                                     var b = data.readUInt8(1 + i * 2 + 1) & 0x00FF;
                                                     var ecgVal = a + b * 256;
-                                                    isSensorDetected = ((ecgVal & 0x8000) != 0);
+                                                    var isSensorDetected = ((ecgVal & 0x8000) != 0);
 
 
                                                     ecgVal = ecgVal & 0x0fff;
