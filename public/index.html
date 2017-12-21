@@ -80,7 +80,7 @@
 			$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
 
 			var host = window.document.location.host.replace(/:.*/, '');
-			var ws = new WebSocket('ws://' + host + ":8080");
+			var ws = new WebSocket('ws://' + host + ":80");
 			ws.onopen = function () {
 				console.log('Successfully connect WebSocket ');
 			}
