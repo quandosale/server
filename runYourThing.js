@@ -84,6 +84,7 @@ YourThing.discoverAll(function (yourThingInstance) {
 
         yourThingInstance.notifyCharacteristic(YOUR_THING_SERVICE_UUID, YOUR_THING_NOTIFY_CHAR, YourThing, (data, isNotify, err) => onNotify(yourThingInstance, data, isNotify, err), function (err) {
             // callback(err);
+            console.log(err);
         });
 
         // noble.startScanning();
