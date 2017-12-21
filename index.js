@@ -50,7 +50,7 @@ wss.on('connection', function (ws) {
 app.use(express.static(path.join(__dirname, '/public')));
 server.on('request', app);
 server.listen(8080, function () {
-    console.log('Listening on http://localhost:8080');
+    console.log('Listening on http://localhost:80');
 });
 noble.on('stateChange', function (state) {
     console.log('stateChange', state);
