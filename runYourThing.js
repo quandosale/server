@@ -112,7 +112,8 @@ const onNotify = (thing, data, isNotify, err) => {
             wss.broadcast(JSON.stringify({
                 humidity: ecgVal,
                 temperature: ecgVal,
-                time: mt
+                time: mt,
+                id: thing.id
             }));
         } catch (err) {
             console.error(err);
