@@ -61,7 +61,7 @@ noble.on('scanStop', function () {
     console.log('on scanStop');
 });
 
-YourThing.discover(function (yourThingInstance) {
+YourThing.discoverAll(function (yourThingInstance) {
     console.log('discovered peripheral: ', yourThingInstance.id);
     // you can be notified of disconnects 
     yourThingInstance.on('disconnect', function () {
