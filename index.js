@@ -148,10 +148,11 @@ function explore(peripheral) {
                     if (error.message)
                         if (error.message.toLocaleLowerCase().includes('already connected')) {
                             console.log('clear Time Interval, unneccessory repeat');
-                            clearTimeout(timeVar);
+                           
                         }
                     return;
                 }
+                clearTimeout(timeVar);
                 console.log(new Date() + ' ' + peripheral.id + ' connected');
                 //[BEGIN connected]
                 peripheral.discoverServices([], function (error, services) {
