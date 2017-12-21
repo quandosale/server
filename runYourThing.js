@@ -1,3 +1,52 @@
+var path = require('path');
+const express = require('express');
+const app = express();
+const WebSocket = require('ws');
+
+var WebSocketServer = require('ws').Server;
+
+const http = require('http');
+var server = require('http').createServer();
+
+var wss = new WebSocketServer({
+    server: server
+});
+// Broadcast to all.
+wss.broadcast = function broadcast(data) {
+    wss.clients.forEach(function each(client) {
+
+        if (client.readyState === WebSocket.OPEN) {
+            try {
+                // console.log('sending data ' + data);
+                client.send(data);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    });
+};
+wss.on('connection', function (ws) {
+    var id = setInterval(function () {
+
+        // var xt = j++;
+        // var mt = j++;
+        // ws.send(JSON.stringify({
+        //     humidity: xt,
+        //     temperature: mt,
+        //     time: mt
+        // }), function () { /* ignore errors */ });
+    }, 100);
+    console.log('started client interval');
+    ws.on('close', function () {
+        console.log('stopping client interval');
+        clearInterval(id);
+    });
+});
+app.use(express.static(path.join(__dirname, '/public')));
+server.on('request', app);
+server.listen(8080, function () {
+    console.log('Listening on http://localhost:8080');
+});
 var YourThing = require('./YourThing');
 var id = '<your devices id>';
 var YOUR_THING_SERVICE_UUID = '1977';
@@ -33,7 +82,7 @@ YourThing.discoverAll(function (yourThingInstance) {
             console.log('got data: ' + data);
         });
 
-        yourThingInstance.notifyCharacteristic(YOUR_THING_SERVICE_UUID, YOUR_THING_NOTIFY_CHAR, YourThing, (data, isNotify, err) => func(yourThingInstance, data, isNotify, err), function (err) {
+        yourThingInstance.notifyCharacteristic(YOUR_THING_SERVICE_UUID, YOUR_THING_NOTIFY_CHAR, YourThing, (data, isNotify, err) => onNotify(yourThingInstance, data, isNotify, err), function (err) {
             // callback(err);
         });
 
@@ -41,6 +90,32 @@ YourThing.discoverAll(function (yourThingInstance) {
     });
 
 });
-const func = (thing, data, isNotify, err) => {
-    console.log(thing.id, data);
+var j = 0;
+const onNotify = (thing, data, isNotify, err) => {
+    // console.log(thing.id, data);
+    for (var i = 0; i < 5; i++) {
+
+        var a = data.readUInt8(1 + i * 2) & 0x00FF;
+        var b = data.readUInt8(1 + i * 2 + 1) & 0x00FF;
+        var ecgVal = a + b * 256;
+        isSensorDetected = ((ecgVal & 0x8000) != 0);
+
+
+        ecgVal = ecgVal & 0x0fff;
+        ecgVal = ecgVal * 2400 / 4096;
+        // console.log('Ecg : ', ecg, typeof data);
+        try {
+            var mt = j++;
+            if (isSensorDetected) {
+                console.log('isSensorDetected', isSensorDetected, ecgVal)
+            }
+            wss.broadcast(JSON.stringify({
+                humidity: ecgVal,
+                temperature: ecgVal,
+                time: mt
+            }));
+        } catch (err) {
+            console.error(err);
+        }
+    }
 }

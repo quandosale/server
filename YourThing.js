@@ -21,11 +21,6 @@ YourThing.is = function (peripheral) {
     return (peripheral.id === idOrLocalName || localName === idOrLocalName);
 };
 
-YourThing.prototype.onNotifyed = function (data, isNotify, err) {
-    // console.log('onNotifyed ', this.id, data, isNotify, err);
-};
-
-
 NobleDevice.Util.inherits(YourThing, NobleDevice);
 NobleDevice.Util.mixin(YourThing, NobleDevice.DeviceInformationService);
 NobleDevice.Util.mixin(YourThing, NobleDevice.HeartRateMeasumentService);
