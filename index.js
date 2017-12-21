@@ -195,7 +195,7 @@ function explore(peripheral) {
                                                         ecgVal = 4090;
                                                     }
                                                     ecgVal = ecgVal * 2400 / 4096;
-                                                    
+
                                                     if (ecgVal <= 0) {
                                                         ecgVal = 10;
                                                     }
@@ -203,7 +203,7 @@ function explore(peripheral) {
                                                     try {
                                                         var mt = j++;
                                                         // if (characteristic._peripheralId == "f2b70e1995e0") {
-                                                            console.log('isSensorDetected', mt, characteristic._peripheralId, isSensorDetected, ecgVal)
+                                                        console.log('isSensorDetected', mt, characteristic._peripheralId, isSensorDetected, ecgVal)
                                                         // }
                                                         wss.broadcast(JSON.stringify({
                                                             humidity: ecgVal,
@@ -212,7 +212,7 @@ function explore(peripheral) {
                                                             id: characteristic._peripheralId
                                                         }));
                                                     } catch (err) {
-                                                        console.error(err);
+                                                        console.error('error', err);
                                                     }
                                                 } // end for i = 5
                                             });
