@@ -202,9 +202,9 @@ function explore(peripheral) {
                                                     // console.log('Ecg : ', ecg, typeof data);
                                                     try {
                                                         var mt = j++;
-                                                        if (characteristic._peripheralId == "f2b70e1995e0") {
+                                                        // if (characteristic._peripheralId == "f2b70e1995e0") {
                                                             console.log('isSensorDetected', mt, characteristic._peripheralId, isSensorDetected, ecgVal)
-                                                        }
+                                                        // }
                                                         wss.broadcast(JSON.stringify({
                                                             humidity: ecgVal,
                                                             temperature: ecgVal,
