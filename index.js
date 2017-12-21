@@ -152,7 +152,7 @@ function explore(peripheral) {
                         }
                     return;
                 }
-                clearTimeout(timeVar);
+                // clearTimeout(timeVar);
                 console.log(new Date() + ' ' + peripheral.id + ' connected');
                 //[BEGIN connected]
                 peripheral.discoverServices([], function (error, services) {
