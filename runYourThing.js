@@ -78,9 +78,9 @@ YourThing.discoverAll(function (yourThingInstance) {
         // yourThingInstance.notifyMeasument(function (counter) {
         //     console.log('notifyMeasument');
         // });
-        yourThingInstance.on('receive', function (error, data) {
-            console.log('got data: ' + data);
-        });
+        // yourThingInstance.on('receive', function (error, data) {
+        //     console.log('got data: ' + data);
+        // });
 
         yourThingInstance.notifyCharacteristic(YOUR_THING_SERVICE_UUID, YOUR_THING_NOTIFY_CHAR, YourThing, (data, isNotify, err) => onNotify(yourThingInstance, data, isNotify, err), function (err) {
             // callback(err);
