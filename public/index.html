@@ -14,8 +14,12 @@
 
 			// We use an inline data source in the example, usually data would
 			// be fetched from a server
+			var devices = [];
 
 			var data = [],
+				data1 = [],
+				data2 = [],
+
 				totalPoints = 300;
 
 			function getRandomData(value) {
@@ -50,7 +54,118 @@
 				return res;
 			}
 
-			var plot = $.plot("#placeholder", [getRandomData()], {
+			function getRandomData1(value) {
+				value = value ? value : 0;
+
+				if (data1.length > 0)
+					data1 = data1.slice(1);
+
+				// Do a random walk
+
+				while (data1.length < totalPoints) {
+
+					var prev = data1.length > 0 ? data1[data1.length - 1] : 50,
+						y = value; // prev + Math.random() * 10 - 5;
+
+					// if (y < 0) {
+					// 	y = 0;
+					// } else if (y > 100) {
+					// 	y = 100;
+					// }
+
+					data1.push(y);
+				}
+
+				// Zip the generated y values with the x values
+
+				var res = [];
+				for (var i = 0; i < data1.length; ++i) {
+					res.push([i, data1[i]])
+				}
+
+				return res;
+			}
+
+			function getRandomData2(value) {
+				value = value ? value : 0;
+
+				if (data2.length > 0)
+				data2 = data2.slice(1);
+
+				// Do a random walk
+
+				while (data2.length < totalPoints) {
+
+					var prev = data2.length > 0 ? data2[data2.length - 1] : 50,
+						y = value; // prev + Math.random() * 10 - 5;
+
+					// if (y < 0) {
+					// 	y = 0;
+					// } else if (y > 100) {
+					// 	y = 100;
+					// }
+
+					data2.push(y);
+				}
+
+				// Zip the generated y values with the x values
+
+				var res = [];
+				for (var i = 0; i < data2.length; ++i) {
+					res.push([i, data2[i]])
+				}
+
+				return res;
+			}
+
+			function isExist(id) {
+				var isSuccess = false;
+				devices.forEach(element => {
+					if (element == id) isSuccess = true;
+				});
+				return isSuccess;
+			}
+
+			function length() {
+				var len = 0;
+				devices.forEach(element => {
+					len += 1;
+				});
+				return len;
+			}
+
+			function index(id) {
+				var itemIndex = 0;
+				for (var i = 0; i < devices.length; i++) {
+					if (devices[i] == id) return i;
+				}
+				return 0;
+			}
+			var plot1 = $.plot("#placeholder1", [getRandomData()], {
+				series: {
+					shadowSize: 0 // Drawing is faster without shadows
+				},
+				yaxis: {
+					min: 0,
+					max: 2500
+				},
+				xaxis: {
+					show: false
+				}
+			});
+			var plot2 = $.plot("#placeholder2", [getRandomData()], {
+				series: {
+					shadowSize: 0 // Drawing is faster without shadows
+				},
+				yaxis: {
+					min: 0,
+					max: 2500
+				},
+				xaxis: {
+					show: false
+				}
+			});
+			var plot3 = $.plot("#placeholder3", [getRandomData()], {
 				series: {
 					shadowSize: 0 // Drawing is faster without shadows
 				},
@@ -77,7 +192,6 @@
 
 			// Add the Flot version string to the footer
 
-			$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
 
 			var host = window.document.location.host.replace(/:.*/, '');
 			var ws = new WebSocket('ws://' + host + ":80");
@@ -85,32 +199,34 @@
 				console.log('Successfully connect WebSocket ');
 			}
 			ws.onmessage = function (message) {
-				console.log('receive message' + message.data);
+				// console.log('receive message' + message.data);
 				try {
 					var obj = JSON.parse(message.data);
+
 					if (!obj.time || !obj.temperature) {
 						return;
 					}
-					// timeData.push(obj.time);
-					// temperatureData.push(obj.temperature);
-					// // only keep no more than 50 points in the line chart
-					// const maxLen = 50;
-					// var len = timeData.length;
-					// if (len > maxLen) {
-					// 	timeData.shift();
-					// 	temperatureData.shift();
-					// }
+					if (obj.id) {
+						if (!isExist(obj.id)) {
+							devices.push(obj.id)
+						}
 
-					// if (obj.humidity) {
-					// 	humidityData.push(obj.humidity);
-					// }
-					// if (humidityData.length > maxLen) {
-					// 	humidityData.shift();
-					// }
-					plot.setData([getRandomData(obj.temperature)]);
+						switch (index(obj.id)) {
+							case 0:
+								plot1.setData([getRandomData(obj.temperature)]);
+								plot1.draw();
+								break;
+							case 1:
+								plot2.setData([getRandomData1(obj.temperature)]);
+								plot2.draw();
+								break;
+							case 2:
+								plot3.setData([getRandomData2(obj.temperature)]);
+								plot3.draw();
+								break;
+						}
+					}
 
-					// Since the axes don't change, we don't need to call plot.setupGrid()
-					plot.draw();
 					// myLineChart.update();
 				} catch (err) {
 					console.error(err);
@@ -129,7 +245,10 @@
 	<div id="content">
 
 		<div class="demo-container">
-			<div id="placeholder" class="demo-placeholder"></div>
+			<div id="placeholder1" class="demo-placeholder"></div>
+			<div id="placeholder2" class="demo-placeholder"></div>
+			<div id="placeholder3" class="demo-placeholder"></div>
+
 		</div>
 
 	</div>

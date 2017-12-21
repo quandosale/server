@@ -191,17 +191,25 @@ function explore(peripheral) {
 
 
                                                     ecgVal = ecgVal & 0x0fff;
+                                                    if (ecgVal >= 4095) {
+                                                        ecgVal = 4090;
+                                                    }
                                                     ecgVal = ecgVal * 2400 / 4096;
+                                                    
+                                                    if (ecgVal <= 0) {
+                                                        ecgVal = 10;
+                                                    }
                                                     // console.log('Ecg : ', ecg, typeof data);
                                                     try {
                                                         var mt = j++;
-                                                        if (isSensorDetected) {
-                                                            console.log('isSensorDetected',characteristic, isSensorDetected, ecgVal)
+                                                        if (characteristic._peripheralId == "f2b70e1995e0") {
+                                                            console.log('isSensorDetected', mt, characteristic._peripheralId, isSensorDetected, ecgVal)
                                                         }
                                                         wss.broadcast(JSON.stringify({
                                                             humidity: ecgVal,
                                                             temperature: ecgVal,
-                                                            time: mt
+                                                            time: mt,
+                                                            id: characteristic._peripheralId
                                                         }));
                                                     } catch (err) {
                                                         console.error(err);
