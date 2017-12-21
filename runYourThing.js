@@ -102,7 +102,14 @@ const onNotify = (thing, data, isNotify, err) => {
 
 
         ecgVal = ecgVal & 0x0fff;
+        if (ecgVal >= 4095) {
+            ecgVal = 4090;
+        }
         ecgVal = ecgVal * 2400 / 4096;
+
+        if (ecgVal <= 0) {
+            ecgVal = 10;
+        }
         // console.log('Ecg : ', ecg, typeof data);
         try {
             var mt = j++;
