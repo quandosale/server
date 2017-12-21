@@ -107,7 +107,7 @@ const onNotify = (thing, data, isNotify, err) => {
         try {
             var mt = j++;
             if (isSensorDetected) {
-                console.log('isSensorDetected', isSensorDetected, ecgVal)
+                // console.log('isSensorDetected', isSensorDetected, ecgVal)
             }
             wss.broadcast(JSON.stringify({
                 humidity: ecgVal,
