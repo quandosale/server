@@ -180,9 +180,10 @@ function explore(peripheral) {
                                     function (callback) {
                                         var characteristic = characteristics[characteristicIndex];
                                         var characteristicInfo = '  ' + characteristic.uuid;
-                                        console.log('-----------------------------------------')
                                         if (characteristic.uuid == '1028') {
                                             characteristic.on('data', function (data, isNotification) {
+
+                                                console.log('-----------------------------------------')
                                                 for (var i = 0; i < 5; i++) {
 
                                                     var a = data.readUInt8(1 + i * 2) & 0x00FF;
