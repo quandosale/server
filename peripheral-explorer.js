@@ -1,5 +1,5 @@
 var async = require('async');
-var noble = require('../index');
+var noble = require('noble');
 
 var peripheralIdOrAddress = process.argv[2].toLowerCase();
 
