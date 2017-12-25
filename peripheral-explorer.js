@@ -1,7 +1,7 @@
 var async = require('async');
 var noble = require('noble');
 
-var peripheralIdOrAddress = process.argv[2].toLowerCase();
+var peripheralIdOrAddress = "CALM_ECG";//process.argv[2].toLowerCase();
 
 noble.on('stateChange', function(state) {
   if (state === 'poweredOn') {
