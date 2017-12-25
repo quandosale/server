@@ -12,7 +12,7 @@ noble.on('stateChange', function(state) {
 });
 
 noble.on('discover', function(peripheral) {
-  if (peripheral.id === peripheralIdOrAddress || peripheral.address === peripheralIdOrAddress) {
+  if (peripheral.id === peripheralIdOrAddress || peripheral.address === peripheralIdOrAddress || true) {
     noble.stopScanning();
 
     console.log('peripheral with ID ' + peripheral.id + ' found');
