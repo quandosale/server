@@ -181,43 +181,7 @@ function explore(peripheral) {
                                         var characteristic = characteristics[characteristicIndex];
                                         var characteristicInfo = '  ' + characteristic.uuid;
                                         if (characteristic.uuid == '1028') {
-                                            characteristic.on('data', function (data, isNotification) {
-
-                                                console.log('-----------------------------------------')
-                                                for (var i = 0; i < 5; i++) {
-
-                                                    var a = data.readUInt8(1 + i * 2) & 0x00FF;
-                                                    var b = data.readUInt8(1 + i * 2 + 1) & 0x00FF;
-                                                    var ecgVal = a + b * 256;
-                                                    var isSensorDetected = ((ecgVal & 0x8000) != 0);
-
-
-                                                    ecgVal = ecgVal & 0x0fff;
-                                                    if (ecgVal >= 4095) {
-                                                        ecgVal = 4090;
-                                                    }
-                                                    ecgVal = ecgVal * 2400 / 4096;
-
-                                                    if (ecgVal <= 0) {
-                                                        ecgVal = 10;
-                                                    }
-                                                    // console.log('Ecg : ', ecg, typeof data);
-                                                    try {
-                                                        var mt = j++;
-                                                        // if (characteristic._peripheralId == "f2b70e1995e0") {
-                                                        // console.log('isSensorDetected', mt, characteristic._peripheralId, isSensorDetected, ecgVal);
-                                                        // }
-                                                        wss.broadcast(JSON.stringify({
-                                                            humidity: ecgVal,
-                                                            temperature: ecgVal,
-                                                            time: mt,
-                                                            id: characteristic._peripheralId
-                                                        }));
-                                                    } catch (err) {
-                                                        console.error('error', err);
-                                                    }
-                                                } // end for i = 5
-                                            });
+                                            characteristic.on('data', (data, isNotification) => onNotify(characteristic, data, isNotification));
                                             characteristic.subscribe(function (error) {
                                                 console.log('ecg notification on');
                                                 console.log();
@@ -314,3 +278,41 @@ function explore(peripheral) {
 
 
 // app.listen(3000, () => console.log('Example app listening on port 3000!'))
+
+const onNotify = (characteristic, data, isNotification) => {
+
+    console.log('-----------------------------------------')
+    for (var i = 0; i < 5; i++) {
+
+        var a = data.readUInt8(1 + i * 2) & 0x00FF;
+        var b = data.readUInt8(1 + i * 2 + 1) & 0x00FF;
+        var ecgVal = a + b * 256;
+        var isSensorDetected = ((ecgVal & 0x8000) != 0);
+
+
+        ecgVal = ecgVal & 0x0fff;
+        if (ecgVal >= 4095) {
+            ecgVal = 4090;
+        }
+        ecgVal = ecgVal * 2400 / 4096;
+
+        if (ecgVal <= 0) {
+            ecgVal = 10;
+        }
+        // console.log('Ecg : ', ecg, typeof data);
+        try {
+            var mt = j++;
+            // if (characteristic._peripheralId == "f2b70e1995e0") {
+            // console.log('isSensorDetected', mt, characteristic._peripheralId, isSensorDetected, ecgVal);
+            // }
+            wss.broadcast(JSON.stringify({
+                humidity: ecgVal,
+                temperature: ecgVal,
+                time: mt,
+                id: characteristic._peripheralId
+            }));
+        } catch (err) {
+            console.error('error', err);
+        }
+    } // end for i = 5
+}
