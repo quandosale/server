@@ -36,7 +36,7 @@ wss.on('connection', function (ws) {
         //     time: mt
         // }), function () { /* ignore errors */ });
     }, 100);
-    console.log('started client interval');
+    // console.log('started client interval');
     ws.on('close', function () {
         console.log('stopping client interval');
         clearInterval(id);

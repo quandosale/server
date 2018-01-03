@@ -22,8 +22,8 @@ YourThing.is = function (peripheral) {
 };
 
 NobleDevice.Util.inherits(YourThing, NobleDevice);
-NobleDevice.Util.mixin(YourThing, NobleDevice.DeviceInformationService);
-NobleDevice.Util.mixin(YourThing, NobleDevice.HeartRateMeasumentService);
+// NobleDevice.Util.mixin(YourThing, NobleDevice.DeviceInformationService);
+// NobleDevice.Util.mixin(YourThing, NobleDevice.HeartRateMeasumentService);
 
 YourThing.prototype.connectAndSetup = function (callback) {
     NobleDevice.prototype.connectAndSetUp.call(this, function (error) {
