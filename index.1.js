@@ -139,8 +139,6 @@ function connectWithFoundDevice() {
     }
 }
 
-
-
 function connectWith(peripheral) {
     // if (connectedIDs[peripheral.id] == 'known') {
         // console.log(peripheral.id + ' discovered again');
