@@ -51,6 +51,8 @@ var ECG_NOTIFY_CHAR = '1028';
 var DESCRIPTOR_UUID = '2901';
 
 var SCANNING_DURATION = 4 * 1000;
+var CONNECTING_DURATION = 6 * 1000;
+
 var foundDevices = [];
 var isScanning = false;
 noble.on('stateChange', function (state) {
@@ -124,6 +126,9 @@ function connectWithFoundDevice() {
         var peripheral = foundDevices[i];
         connectWith(peripheral);
     }
+    setTimeout(function () {
+        startScanningDuration();
+    }, CONNECTING_DURATION);
 }
 
 function connectWith(peripheral) {
