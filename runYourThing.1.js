@@ -98,7 +98,9 @@ YourThing.discoverAll(function (yourThingInstance) {
 setTimeout(stopScanning(), SCANNING_DURATION);
 
 function stopScanning() {
-    console.log("-          stop scanning               -")
+    console.log("-          stop scanning               -");
+    console.log(" found devices  ");
+    console.log(foundDevices);
     noble.stopScanning();
 }
 
