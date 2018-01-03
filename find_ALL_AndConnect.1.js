@@ -1,13 +1,9 @@
+// [BEGIN] CONFIGURE for Web server
 var path = require('path');
-const async = require('async');
 const express = require('express')
 const app = express()
-const noble = require('noble');
 const WebSocket = require('ws');
-
 var WebSocketServer = require('ws').Server;
-
-const moment = require('moment');
 const http = require('http');
 var server = require('http').createServer();
 
@@ -29,7 +25,7 @@ wss.broadcast = function broadcast(data) {
         }
     });
 };
-var j = 1;
+
 wss.on('connection', function (ws) {
     var id = setInterval(function () {}, 100);
     console.log('started client interval');
@@ -43,6 +39,12 @@ server.on('request', app);
 server.listen(80, function () {
     console.log('Listening on http://localhost:80');
 });
+// [END] CONFIGURE for Web server
+
+
+// [BEGIN] for Ble management
+const async = require('async');
+const noble = require('noble');
 
 var ECG_SERVICE_UUID = '1977';
 var ECG_NOTIFY_CHAR = '1028';
@@ -242,28 +244,7 @@ function connectWith(peripheral) {
         });
         //[END connected]
     });
-    // }, 1000);
-    // }
-    // console.log('services and characteristics:');
-
-
-
-    // console.log('connecting with', peripheral.id)
-    // peripheral.connect(function (error) {
-    //     if (error) {
-    //         console.log('peripheral connect error', error);
-
-    //     }
-
-    // });
 }
-
-// app.get('/', (req, res) => {
-//     res.send('Hello World!');
-// })
-
-
-// app.listen(3000, () => console.log('Example app listening on port 3000!'))
 
 const onNotify = (characteristic, data, isNotification) => {
 
@@ -302,3 +283,4 @@ const onNotify = (characteristic, data, isNotification) => {
         }
     } // end for i = 5
 }
+// [END] for Ble management
