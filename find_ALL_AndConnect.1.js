@@ -110,6 +110,8 @@ function connectWith(peripheral) {
     // console.log(peripheral);
     var state = peripheral.state;
     console.log('connecting... with ' + peripheral.id, state);
+    
+    if (state != "disconnected") return;
 
     peripheral.on('disconnect', function () {
         console.log('on Disconnected: ' + peripheral.id)
