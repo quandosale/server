@@ -66,7 +66,7 @@ noble.on('stateChange', function (state) {
         //
         console.log('scanning...');
         noble.startScanning();
-        // setTimeout(stopScanning(), SCANNING_DURATION);
+        setTimeout(stopScanning(), 10000);
     } else {
         console.log('stopScanning...');
         noble.stopScanning();
