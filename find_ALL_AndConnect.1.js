@@ -108,9 +108,8 @@ function connectWithFoundDevice() {
 }
 
 function connectWith(peripheral) {
-    console.log(peripheral);
-    var advertisement = peripheral.advertisement;
-    var state = advertisement.state;
+    // console.log(peripheral);
+    var state = peripheral.state;
     console.log('connecting... with ' + peripheral.id, state);
 
     peripheral.on('disconnect', function () {
