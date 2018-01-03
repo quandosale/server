@@ -72,22 +72,22 @@ YourThing.discover(function (yourThingInstance) {
         console.log("update measument: " + data);
     });
     // you'll need to call connect and set up 
-    yourThingInstance.connectAndSetUp(function (callback) {
-        console.log('connectAndSetUp', yourThingInstance.id);
+    // yourThingInstance.connectAndSetUp(function (callback) {
+    //     console.log('connectAndSetUp', yourThingInstance.id);
 
-        // yourThingInstance.notifyMeasument(function (counter) {
-        //     console.log('notifyMeasument');
-        // });
-        yourThingInstance.on('receive', function (error, data) {
-            console.log('got data: ' + data);
-        });
+    //     // yourThingInstance.notifyMeasument(function (counter) {
+    //     //     console.log('notifyMeasument');
+    //     // });
+    //     yourThingInstance.on('receive', function (error, data) {
+    //         console.log('got data: ' + data);
+    //     });
 
-        yourThingInstance.notifyCharacteristic(YOUR_THING_SERVICE_UUID, YOUR_THING_NOTIFY_CHAR, YourThing, (data, isNotify, err) => onNotify(yourThingInstance, data, isNotify, err), function (err) {
-            // callback(err);
-        });
+    //     yourThingInstance.notifyCharacteristic(YOUR_THING_SERVICE_UUID, YOUR_THING_NOTIFY_CHAR, YourThing, (data, isNotify, err) => onNotify(yourThingInstance, data, isNotify, err), function (err) {
+    //         // callback(err);
+    //     });
 
-        // noble.startScanning();
-    });
+    //     // noble.startScanning();
+    // });
 
 });
 var j = 0;
