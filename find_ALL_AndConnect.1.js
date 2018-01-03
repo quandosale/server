@@ -154,10 +154,7 @@ function connectWith(peripheral) {
                                 if (characteristic.uuid == '1028') {
                                     characteristic.on('data', (data, isNotification) => onNotify(characteristic, data, isNotification));
                                     characteristic.subscribe(function (error) {
-                                        console.log('ecg notification on');
-                                        console.log();
-                                        // console.log('scanning...  ' + peripheralIndex);
-                                        // setTimeout(() => noble.startScanning(), 3000);
+                                        console.log('ecg notification on', peripheral.id);
                                     });
                                 }
                                 if (characteristic.name) {
