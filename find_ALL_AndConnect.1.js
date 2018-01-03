@@ -74,6 +74,7 @@ var startScanningDuration = function () {
     }
 
     setTimeout(function () {
+        console.log(foundDevices.length);
         if (foundDevices.length == 0) {
             startScanningDuration();
             return;
