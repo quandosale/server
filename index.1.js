@@ -271,11 +271,11 @@ function connectWith(peripheral) {
             });
         // }, 1000);
     // }
-    console.log('services and characteristics:');
+    // console.log('services and characteristics:');
 
 
 
-    console.log('connecting with', peripheral.id)
+    // console.log('connecting with', peripheral.id)
     // peripheral.connect(function (error) {
     //     if (error) {
     //         console.log('peripheral connect error', error);
