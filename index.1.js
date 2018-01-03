@@ -53,7 +53,7 @@ server.listen(80, function () {
     console.log('Listening on http://localhost:80');
 });
 
-var SCANNING_DURATION = 10 * 1000;
+var SCANNING_DURATION = 4 * 1000;
 var foundDevices = {};
 
 noble.on('stateChange', function (state) {
