@@ -102,7 +102,6 @@ function connectWithFoundDevice() {
     if (foundDevices.length == 0) return;
     for (var i = 0; i < foundDevices.length; i++) {
         var peripheral = foundDevices[i];
-        console.log("item", peripheral.id);
         connectWith(peripheral);
     }
 }
