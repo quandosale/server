@@ -31,8 +31,7 @@ wss.broadcast = function broadcast(data) {
 };
 var j = 1;
 wss.on('connection', function (ws) {
-    var id = setInterval(function () {
-    }, 100);
+    var id = setInterval(function () {}, 100);
     console.log('started client interval');
     ws.on('close', function () {
         console.log('stopping client interval');
@@ -85,9 +84,18 @@ noble.on('discover', function (peripheral) {
     var localName = advertisement.localName;
     if (!localName) return;
     if (!localName.toLocaleLowerCase().includes('calm')) return;
-    console.log(localName);
+    if (exist(peripheral)) return;
+    console.log(peripheral.id);
     foundDevices.push(peripheral);
 });
+
+var exist = function (_peripheral) {
+    for (var i = 0; i < foundDevices.length; i++) {
+        var peripheral = foundDevices[i];
+        if (peripheral.id == _peripheral.id) return true;
+    }
+    return false;
+}
 
 function connectWithFoundDevice() {
     console.log("connect with found device ", foundDevices.length);
