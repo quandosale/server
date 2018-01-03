@@ -273,15 +273,17 @@ var ecgTransform = function (byte1, byte2) {
     var ecgVal = byte1 + byte2 * 256;
     var isSensorDetected = ((ecgVal & 0x8000) != 0);
 
-
     ecgVal = ecgVal & 0x0fff;
-    if (ecgVal >= 4095) {
-        ecgVal = 4090;
-    }
+
     ecgVal = ecgVal * 2400 / 4096;
+
+    if (ecgVal >= 2400) {
+        ecgVal = 2390;
+    }
 
     if (ecgVal <= 0) {
         ecgVal = 10;
     }
+
     return ecgVal;
 }
