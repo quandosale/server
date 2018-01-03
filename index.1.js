@@ -64,7 +64,7 @@ noble.on('stateChange', function (state) {
         // to begin scanning for services. Pass an empty array to
         // scan for all services (uses more time and power).
         //
-        console.log('scanning...');
+        console.log('start scanning...');
         noble.startScanning();
         setTimeout(function stopScanning() {
             console.log("-          stop scanning               -");
@@ -198,7 +198,7 @@ function connectWith(peripheral) {
                                             characteristic.subscribe(function (error) {
                                                 console.log('ecg notification on');
                                                 console.log();
-                                                console.log('scanning...  ' + peripheralIndex);
+                                                // console.log('scanning...  ' + peripheralIndex);
                                                 // setTimeout(() => noble.startScanning(), 3000);
                                             });
                                         }
