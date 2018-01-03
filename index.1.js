@@ -135,15 +135,16 @@ function connectWithFoundDevice() {
     for (var i = 0; i < foundDevices.length; i++) {
         var peripheral = foundDevices[i];
         console.log("item", peripheral);
+        connectWith(peripheral);
     }
 }
 
 
 
-function explore(peripheral) {
-    if (connectedIDs[peripheral.id] == 'known') {
-        console.log(peripheral.id + ' discovered again');
-    } else {
+function connectWith(peripheral) {
+    // if (connectedIDs[peripheral.id] == 'known') {
+        // console.log(peripheral.id + ' discovered again');
+    // } else {
 
         console.log(new Date() + ' ' + peripheral.id + ' discovered first time');
         peripheral.on('disconnect', function () {
@@ -153,7 +154,7 @@ function explore(peripheral) {
 
         connectedIDs[peripheral.id] = 'known';
 
-        var timeVar = setInterval(() => {
+        // var timeVar = setInterval(() => {
             peripheral.connect(function (error) {
                 noble.startScanning();
                 if (error) {
@@ -269,8 +270,8 @@ function explore(peripheral) {
                 });
                 //[END connected]
             });
-        }, 1000);
-    }
+        // }, 1000);
+    // }
     console.log('services and characteristics:');
 
 
