@@ -29,6 +29,7 @@ YourThing.prototype.connectAndSetup = function (callback) {
     NobleDevice.prototype.connectAndSetUp.call(this, function (error) {
         // maybe notify on a characteristic ?
         this.notifyCharacteristic(YOUR_THING_SERVICE_UUID, YOUR_THING_NOTIFY_CHAR, true, this._onRead.bind(this), function (err) {
+            console.log('error ', err);
             callback(err);
         });
     }.bind(this));
