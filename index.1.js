@@ -70,10 +70,11 @@ noble.on('stateChange', function (state) {
             console.log("-          stop scanning               -");
             console.log(" found devices  ");
             console.log(foundDevices.length);
-            noble.stopScanning();
+            noble.stopScanning(function(err){
+                console.log('stopScanning callback');
+            });
 
-          
-        }, 10000);
+        }, SCANNING_DURATION);
     } else {
         console.log('stopScanning...');
         noble.stopScanning();
