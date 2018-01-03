@@ -129,10 +129,10 @@ noble.on('discover', function (peripheral) {
     foundDevices[peripheral.id] = 'known';
 });
 
-function connectWithFoundDevice(){
+function connectWithFoundDevice() {
     console.log("connect with found device ", foundDevices);
-    if(foundDevices.length == 0)return;
-    foundDevices.forEach(personalbar =>{
+    if (foundDevices.length == 0) return;
+    foundDevices.forEach(function (personalbar) {
         console.log("item", peripheral);
     });
 }
