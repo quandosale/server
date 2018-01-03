@@ -69,7 +69,7 @@ noble.on('stateChange', function (state) {
         setTimeout(function stopScanning() {
             console.log("-          stop scanning               -");
             console.log(" found devices  ");
-            console.log(foundDevices);
+            console.log(foundDevices.length);
             noble.stopScanning();
 
           
