@@ -54,7 +54,7 @@ server.listen(80, function () {
 });
 
 var SCANNING_DURATION = 4 * 1000;
-var foundDevices = {};
+var foundDevices = [];
 
 noble.on('stateChange', function (state) {
     console.log('stateChange', state);
@@ -127,7 +127,7 @@ noble.on('discover', function (peripheral) {
     console.log();
     if (!localName) return;
     if (!localName.toLocaleLowerCase().includes('calm')) return;
-    foundDevices[peripheral.id] = peripheral;
+    foundDevices.push(peripheral);
 });
 
 function connectWithFoundDevice() {
