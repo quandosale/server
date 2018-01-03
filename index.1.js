@@ -155,7 +155,7 @@ function connectWith(peripheral) {
 
         // var timeVar = setInterval(() => {
             peripheral.connect(function (error) {
-                noble.startScanning();
+                // noble.startScanning();
                 if (error) {
                     console.log('peripheral connect error', error);
                     if (error.message)
