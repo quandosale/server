@@ -60,7 +60,7 @@ noble.on('scanStart', function () {
 noble.on('scanStop', function () {
     console.log('on scanStop');
 });
-var SCANNING_DURATION = 10 * 1000;
+var SCANNING_DURATION = 1000 * 1000;
 var foundDevices = {};
 
 YourThing.discoverAll(function (yourThingInstance) {
