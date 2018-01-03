@@ -245,7 +245,7 @@ function connectWith(peripheral) {
         //[END connected]
     });
 }
-
+let time = 0;
 const onNotify = (characteristic, data, isNotification) => {
 
     // console.log('-----------------------------------------')
@@ -268,14 +268,13 @@ const onNotify = (characteristic, data, isNotification) => {
         }
         // console.log('Ecg : ', ecg, typeof data);
         try {
-            var mt = j++;
             // if (characteristic._peripheralId == "f2b70e1995e0") {
             // console.log('isSensorDetected', mt, characteristic._peripheralId, isSensorDetected, ecgVal);
             // }
             wss.broadcast(JSON.stringify({
                 humidity: ecgVal,
                 temperature: ecgVal,
-                time: mt,
+                time: time++,
                 id: characteristic._peripheralId
             }));
         } catch (err) {
