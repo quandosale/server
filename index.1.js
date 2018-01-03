@@ -181,7 +181,7 @@ function connectWith(peripheral) {
                             if (service.name) {
                                 serviceInfo += ' (' + service.name + ')';
                             }
-                            console.log('serviceInfo', serviceInfo);
+                            // console.log('serviceInfo', serviceInfo);
 
                             service.discoverCharacteristics([], function (error, characteristics) {
                                 var characteristicIndex = 0;
