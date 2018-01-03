@@ -1,3 +1,5 @@
+import { forEach } from './C:/Users/Admin/AppData/Local/Microsoft/TypeScript/2.6/node_modules/@types/async';
+
 var path = require('path');
 const async = require('async');
 const express = require('express')
@@ -71,12 +73,14 @@ noble.on('stateChange', function (state) {
             console.log(" found devices  ");
             console.log(foundDevices);
             noble.stopScanning();
+
+            connectWithFoundDevice();
         }, 10000);
     } else {
         console.log('stopScanning...');
         noble.stopScanning();
     }
-})
+});
 var peripheralIndex = 1;
 var processPeripheral = {};
 var connectedIDs = {};
@@ -127,6 +131,13 @@ noble.on('discover', function (peripheral) {
     foundDevices[peripheral.id] = 'known';
 });
 
+function connectWithFoundDevice(){
+    console.log("connect with found device ", foundDevices);
+    if(foundDevices.length == 0)return;
+    foundDevices.forEach(personalbar =>{
+        console.log("item", peripheral);
+    });
+}
 
 
 
