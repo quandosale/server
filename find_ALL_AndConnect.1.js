@@ -1,3 +1,10 @@
+import {
+    startScanning
+} from './C:/Users/Admin/AppData/Local/Microsoft/TypeScript/2.6/node_modules/@types/noble';
+import {
+    retry
+} from './C:/Users/Admin/AppData/Local/Microsoft/TypeScript/2.6/node_modules/@types/async';
+
 var path = require('path');
 const async = require('async');
 const express = require('express')
@@ -44,9 +51,13 @@ server.listen(80, function () {
     console.log('Listening on http://localhost:80');
 });
 
+var ECG_SERVICE_UUID = '1977';
+var ECG_NOTIFY_CHAR = '1028';
+var DESCRIPTOR_UUID = '2901';
+
 var SCANNING_DURATION = 4 * 1000;
 var foundDevices = [];
-
+var isScanning = false;
 noble.on('stateChange', function (state) {
     console.log('stateChange', state);
     if (state === 'poweredOn') {
@@ -55,15 +66,7 @@ noble.on('stateChange', function (state) {
         // to begin scanning for services. Pass an empty array to
         // scan for all services (uses more time and power).
         //
-        console.log('start scanning...');
-        noble.startScanning();
-
-        setTimeout(function stopScanning() {
-            noble.stopScanning(function (err) {
-                connectWithFoundDevice();
-            });
-
-        }, SCANNING_DURATION);
+        startScanningDuration();
 
     } else {
         console.log('stopScanning...');
@@ -71,11 +74,32 @@ noble.on('stateChange', function (state) {
     }
 });
 
+var startScanningDuration = function () {
+    if (!isScanning) {
+        console.log('start scanning...');
+        noble.startScanning();
+    }
+
+    setTimeout(function () {
+        if (foundDevices.length == 0) {
+            startScanningDuration();
+            return;
+        }
+
+        noble.stopScanning(function (err) {
+            connectWithFoundDevice();
+        });
+
+    }, SCANNING_DURATION);
+}
+
 noble.on('scanStart', function () {
+    isScanning = true;
     console.log('on scanStart');
 });
 
 noble.on('scanStop', function () {
+    isScanning = false;
     console.log('on scanStop');
 });
 
@@ -110,7 +134,7 @@ function connectWith(peripheral) {
     // console.log(peripheral);
     var state = peripheral.state;
     console.log('connecting... with ' + peripheral.id, state);
-    
+
     if (state != "disconnected") return;
 
     peripheral.on('disconnect', function () {
@@ -151,7 +175,7 @@ function connectWith(peripheral) {
                             function (callback) {
                                 var characteristic = characteristics[characteristicIndex];
                                 var characteristicInfo = '  ' + characteristic.uuid;
-                                if (characteristic.uuid == '1028') {
+                                if (characteristic.uuid == ECG_NOTIFY_CHAR) {
                                     characteristic.on('data', (data, isNotification) => onNotify(characteristic, data, isNotification));
                                     characteristic.subscribe(function (error) {
                                         console.log('ecg notification on', peripheral.id);
@@ -167,7 +191,7 @@ function connectWith(peripheral) {
                                             async.detect(
                                                 descriptors,
                                                 function (descriptor, callback) {
-                                                    return callback(descriptor.uuid === '2901');
+                                                    return callback(descriptor.uuid === DESCRIPTOR_UUID);
                                                 },
                                                 function (userDescriptionDescriptor) {
                                                     if (userDescriptionDescriptor) {
@@ -216,7 +240,7 @@ function connectWith(peripheral) {
                 },
                 function (err) {
                     if (err) {
-                        console.log('line 188 error', err)
+                        console.log('line 223 error', err)
                         peripheral.disconnect();
                     }
                 }
