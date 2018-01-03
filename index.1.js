@@ -66,7 +66,12 @@ noble.on('stateChange', function (state) {
         //
         console.log('scanning...');
         noble.startScanning();
-        setTimeout(stopScanning(), 10000);
+        setTimeout(function stopScanning() {
+            console.log("-          stop scanning               -");
+            console.log(" found devices  ");
+            console.log(foundDevices);
+            noble.stopScanning();
+        }, 10000);
     } else {
         console.log('stopScanning...');
         noble.stopScanning();
@@ -122,12 +127,7 @@ noble.on('discover', function (peripheral) {
     foundDevices[peripheral.id] = 'known';
 });
 
-function stopScanning() {
-    console.log("-          stop scanning               -");
-    console.log(" found devices  ");
-    console.log(foundDevices);
-    noble.stopScanning();
-}
+
 
 
 function explore(peripheral) {
