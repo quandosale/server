@@ -294,7 +294,7 @@ function connectWith(peripheral) {
 
 const onNotify = (characteristic, data, isNotification) => {
 
-    console.log('-----------------------------------------')
+    // console.log('-----------------------------------------')
     for (var i = 0; i < 5; i++) {
 
         var a = data.readUInt8(1 + i * 2) & 0x00FF;
