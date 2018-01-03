@@ -148,8 +148,7 @@ function connectWith(peripheral) {
         peripheral.discoverServices([], function (error, services) {
             var serviceIndex = 0;
 
-            async.whilst(
-                function () {
+            async.whilst(function () {
                     return (serviceIndex < services.length);
                 },
                 function (callback) {
@@ -164,8 +163,7 @@ function connectWith(peripheral) {
                     service.discoverCharacteristics([], function (error, characteristics) {
                         var characteristicIndex = 0;
 
-                        async.whilst(
-                            function () {
+                        async.whilst(function () {
                                 return (characteristicIndex < characteristics.length);
                             },
                             function (callback) {
@@ -225,13 +223,12 @@ function connectWith(peripheral) {
                                         characteristicIndex++;
                                         callback();
                                     }
-                                ]);
+                                ]); //async.series
                             },
                             function (error) {
                                 serviceIndex++;
                                 callback();
-                            }
-                        );
+                            }); //async.whilst(characteristic)
                     });
                 },
                 function (err) {
@@ -241,7 +238,7 @@ function connectWith(peripheral) {
                     }
                 }
             );
-        });
+        }); //async.whilst(service)
         //[END connected]
     });
 }
@@ -251,29 +248,17 @@ const onNotify = (characteristic, data, isNotification) => {
     // console.log('-----------------------------------------')
     for (var i = 0; i < 5; i++) {
 
-        var a = data.readUInt8(1 + i * 2) & 0x00FF;
-        var b = data.readUInt8(1 + i * 2 + 1) & 0x00FF;
-        var ecgVal = a + b * 256;
-        var isSensorDetected = ((ecgVal & 0x8000) != 0);
-
-
-        ecgVal = ecgVal & 0x0fff;
-        if (ecgVal >= 4095) {
-            ecgVal = 4090;
-        }
-        ecgVal = ecgVal * 2400 / 4096;
-
-        if (ecgVal <= 0) {
-            ecgVal = 10;
-        }
+        var byte1 = data.readUInt8(1 + i * 2) & 0x00FF;
+        var byte2 = data.readUInt8(1 + i * 2 + 1) & 0x00FF;
+        var ecg = ecgTransform(byte1, byte2);
         // console.log('Ecg : ', ecg, typeof data);
         try {
             // if (characteristic._peripheralId == "f2b70e1995e0") {
             // console.log('isSensorDetected', mt, characteristic._peripheralId, isSensorDetected, ecgVal);
             // }
             wss.broadcast(JSON.stringify({
-                humidity: ecgVal,
-                temperature: ecgVal,
+                humidity: ecg,
+                temperature: ecg,
                 time: time++,
                 id: characteristic._peripheralId
             }));
@@ -283,3 +268,20 @@ const onNotify = (characteristic, data, isNotification) => {
     } // end for i = 5
 }
 // [END] for Ble management
+
+var ecgTransform = function (byte1, byte2) {
+    var ecgVal = byte1 + byte2 * 256;
+    var isSensorDetected = ((ecgVal & 0x8000) != 0);
+
+
+    ecgVal = ecgVal & 0x0fff;
+    if (ecgVal >= 4095) {
+        ecgVal = 4090;
+    }
+    ecgVal = ecgVal * 2400 / 4096;
+
+    if (ecgVal <= 0) {
+        ecgVal = 10;
+    }
+    return ecgVal;
+}
