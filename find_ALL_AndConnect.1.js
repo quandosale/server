@@ -108,21 +108,17 @@ function connectWithFoundDevice() {
 }
 
 function connectWith(peripheral) {
-    console.log(new Date() + ' ' + peripheral.id + ' discovered first time');
+    console.log(peripheral)
+    console.log('connecting... with ' + peripheral.id);
+
     peripheral.on('disconnect', function () {
-        console.log('on Disconnected & exit(0)')
-        // process.exit(0);
+        console.log('on Disconnected: ' + peripheral.id)
     });
-    // var timeVar = setInterval(() => {
+
     peripheral.connect(function (error) {
         // noble.startScanning();
         if (error) {
             console.log('peripheral connect error', error);
-            if (error.message)
-                if (error.message.toLocaleLowerCase().includes('already connected')) {
-                    console.log('clear Time Interval, unneccessory repeat');
-                    // clearInterval(timeVar);
-                }
             return;
         }
         console.log(peripheral.id + ' connected');
