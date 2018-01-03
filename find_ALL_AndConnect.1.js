@@ -242,7 +242,7 @@ function connectWith(peripheral) {
         //[END connected]
     });
 }
-let time = 0;
+var time = 0;
 const onNotify = (characteristic, data, isNotification) => {
 
     // console.log('-----------------------------------------')
