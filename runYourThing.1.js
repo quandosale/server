@@ -95,14 +95,14 @@ YourThing.discoverAll(function (yourThingInstance) {
 
 });
 
-setTimeout(stopScanning(), SCANNING_DURATION);
-
 function stopScanning() {
     console.log("-          stop scanning               -");
     console.log(" found devices  ");
     console.log(foundDevices);
     noble.stopScanning();
 }
+
+setTimeout(stopScanning(), SCANNING_DURATION);
 
 var j = 0;
 const onNotify = (thing, data, isNotify, err) => {
