@@ -126,7 +126,7 @@ noble.on('discover', function (peripheral) {
     console.log();
     if (!localName) return;
     if (!localName.toLocaleLowerCase().includes('calm')) return;
-    foundDevices[peripheral.id] = 'known';
+    foundDevices[peripheral.id] = peripheral;
 });
 
 function connectWithFoundDevice() {
