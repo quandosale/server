@@ -72,7 +72,7 @@ noble.on('stateChange', function (state) {
             console.log(foundDevices);
             noble.stopScanning();
 
-            connectWithFoundDevice();
+          
         }, 10000);
     } else {
         console.log('stopScanning...');
@@ -89,6 +89,7 @@ noble.on('scanStart', function () {
 
 noble.on('scanStop', function () {
     console.log('on scanStop');
+    connectWithFoundDevice();
 });
 
 noble.on('discover', function (peripheral) {
