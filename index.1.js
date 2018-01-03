@@ -131,7 +131,7 @@ noble.on('discover', function (peripheral) {
 });
 
 function connectWithFoundDevice() {
-    console.log("connect with found device ", foundDevices);
+    // console.log("connect with found device ", foundDevices);
     if (foundDevices.length == 0) return;
     for (var i = 0; i < foundDevices.length; i++) {
         var peripheral = foundDevices[i];
