@@ -121,9 +121,9 @@ noble.on('discover', function (peripheral) {
     //     console.log('  Service UUIDs     = ' + serviceUuids);
     // }
 
-    console.log();
     if (!localName) return;
     if (!localName.toLocaleLowerCase().includes('calm')) return;
+    console.log(localName);
     foundDevices.push(peripheral);
 });
 
