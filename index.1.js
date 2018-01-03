@@ -1,5 +1,3 @@
-import { forEach } from './C:/Users/Admin/AppData/Local/Microsoft/TypeScript/2.6/node_modules/@types/async';
-
 var path = require('path');
 const async = require('async');
 const express = require('express')
