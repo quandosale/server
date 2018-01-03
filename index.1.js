@@ -67,11 +67,8 @@ noble.on('stateChange', function (state) {
         console.log('start scanning...');
         noble.startScanning();
         setTimeout(function stopScanning() {
-            console.log("-          stop scanning               -");
-            console.log(" found devices  ");
-            console.log(foundDevices.length);
-            noble.stopScanning(function(err){
-                console.log('stopScanning callback');
+            noble.stopScanning(function (err) {
+                connectWithFoundDevice();
             });
 
         }, SCANNING_DURATION);
@@ -90,7 +87,6 @@ noble.on('scanStart', function () {
 
 noble.on('scanStop', function () {
     console.log('on scanStop');
-    connectWithFoundDevice();
 });
 
 noble.on('discover', function (peripheral) {
@@ -143,134 +139,134 @@ function connectWithFoundDevice() {
 
 function connectWith(peripheral) {
     // if (connectedIDs[peripheral.id] == 'known') {
-        // console.log(peripheral.id + ' discovered again');
+    // console.log(peripheral.id + ' discovered again');
     // } else {
 
-        console.log(new Date() + ' ' + peripheral.id + ' discovered first time');
-        peripheral.on('disconnect', function () {
-            console.log('on Disconnected & exit(0)')
-            // process.exit(0);
-        });
+    console.log(new Date() + ' ' + peripheral.id + ' discovered first time');
+    peripheral.on('disconnect', function () {
+        console.log('on Disconnected & exit(0)')
+        // process.exit(0);
+    });
 
-        connectedIDs[peripheral.id] = 'known';
+    connectedIDs[peripheral.id] = 'known';
 
-        // var timeVar = setInterval(() => {
-            peripheral.connect(function (error) {
-                // noble.startScanning();
-                if (error) {
-                    console.log('peripheral connect error', error);
-                    if (error.message)
-                        if (error.message.toLocaleLowerCase().includes('already connected')) {
-                            console.log('clear Time Interval, unneccessory repeat');
-                            // clearInterval(timeVar);
-                        }
-                    return;
+    // var timeVar = setInterval(() => {
+    peripheral.connect(function (error) {
+        // noble.startScanning();
+        if (error) {
+            console.log('peripheral connect error', error);
+            if (error.message)
+                if (error.message.toLocaleLowerCase().includes('already connected')) {
+                    console.log('clear Time Interval, unneccessory repeat');
+                    // clearInterval(timeVar);
                 }
-                console.log(new Date() + ' ' + peripheral.id + ' connected');
-                //[BEGIN connected]
-                peripheral.discoverServices([], function (error, services) {
-                    var serviceIndex = 0;
+            return;
+        }
+        console.log(new Date() + ' ' + peripheral.id + ' connected');
+        //[BEGIN connected]
+        peripheral.discoverServices([], function (error, services) {
+            var serviceIndex = 0;
 
-                    async.whilst(
-                        function () {
-                            return (serviceIndex < services.length);
-                        },
-                        function (callback) {
-                            var service = services[serviceIndex];
-                            var serviceInfo = service.uuid;
+            async.whilst(
+                function () {
+                    return (serviceIndex < services.length);
+                },
+                function (callback) {
+                    var service = services[serviceIndex];
+                    var serviceInfo = service.uuid;
 
-                            if (service.name) {
-                                serviceInfo += ' (' + service.name + ')';
-                            }
-                            // console.log('serviceInfo', serviceInfo);
+                    if (service.name) {
+                        serviceInfo += ' (' + service.name + ')';
+                    }
+                    // console.log('serviceInfo', serviceInfo);
 
-                            service.discoverCharacteristics([], function (error, characteristics) {
-                                var characteristicIndex = 0;
+                    service.discoverCharacteristics([], function (error, characteristics) {
+                        var characteristicIndex = 0;
 
-                                async.whilst(
-                                    function () {
-                                        return (characteristicIndex < characteristics.length);
+                        async.whilst(
+                            function () {
+                                return (characteristicIndex < characteristics.length);
+                            },
+                            function (callback) {
+                                var characteristic = characteristics[characteristicIndex];
+                                var characteristicInfo = '  ' + characteristic.uuid;
+                                if (characteristic.uuid == '1028') {
+                                    characteristic.on('data', (data, isNotification) => onNotify(characteristic, data, isNotification));
+                                    characteristic.subscribe(function (error) {
+                                        console.log('ecg notification on');
+                                        console.log();
+                                        // console.log('scanning...  ' + peripheralIndex);
+                                        // setTimeout(() => noble.startScanning(), 3000);
+                                    });
+                                }
+                                if (characteristic.name) {
+                                    characteristicInfo += ' (' + characteristic.name + ')';
+                                }
+
+                                async.series([
+                                    function (callback) {
+                                        characteristic.discoverDescriptors(function (error, descriptors) {
+                                            async.detect(
+                                                descriptors,
+                                                function (descriptor, callback) {
+                                                    return callback(descriptor.uuid === '2901');
+                                                },
+                                                function (userDescriptionDescriptor) {
+                                                    if (userDescriptionDescriptor) {
+                                                        userDescriptionDescriptor.readValue(function (error, data) {
+                                                            if (data) {
+                                                                characteristicInfo += ' (' + data.toString() + ')';
+                                                            }
+                                                            callback();
+                                                        });
+                                                    } else {
+                                                        callback();
+                                                    }
+                                                }
+                                            );
+                                        });
                                     },
                                     function (callback) {
-                                        var characteristic = characteristics[characteristicIndex];
-                                        var characteristicInfo = '  ' + characteristic.uuid;
-                                        if (characteristic.uuid == '1028') {
-                                            characteristic.on('data', (data, isNotification) => onNotify(characteristic, data, isNotification));
-                                            characteristic.subscribe(function (error) {
-                                                console.log('ecg notification on');
-                                                console.log();
-                                                // console.log('scanning...  ' + peripheralIndex);
-                                                // setTimeout(() => noble.startScanning(), 3000);
-                                            });
-                                        }
-                                        if (characteristic.name) {
-                                            characteristicInfo += ' (' + characteristic.name + ')';
-                                        }
+                                        characteristicInfo += '\n    properties  ' + characteristic.properties.join(', ');
 
-                                        async.series([
-                                            function (callback) {
-                                                characteristic.discoverDescriptors(function (error, descriptors) {
-                                                    async.detect(
-                                                        descriptors,
-                                                        function (descriptor, callback) {
-                                                            return callback(descriptor.uuid === '2901');
-                                                        },
-                                                        function (userDescriptionDescriptor) {
-                                                            if (userDescriptionDescriptor) {
-                                                                userDescriptionDescriptor.readValue(function (error, data) {
-                                                                    if (data) {
-                                                                        characteristicInfo += ' (' + data.toString() + ')';
-                                                                    }
-                                                                    callback();
-                                                                });
-                                                            } else {
-                                                                callback();
-                                                            }
-                                                        }
-                                                    );
-                                                });
-                                            },
-                                            function (callback) {
-                                                characteristicInfo += '\n    properties  ' + characteristic.properties.join(', ');
+                                        if (characteristic.properties.indexOf('read') !== -1) {
+                                            characteristic.read(function (error, data) {
+                                                if (data) {
+                                                    var string = data.toString('ascii');
 
-                                                if (characteristic.properties.indexOf('read') !== -1) {
-                                                    characteristic.read(function (error, data) {
-                                                        if (data) {
-                                                            var string = data.toString('ascii');
-
-                                                            characteristicInfo += '\n    value       ' + data.toString('hex') + ' | \'' + string + '\'';
-                                                        }
-                                                        callback();
-                                                    });
-                                                } else {
-                                                    callback();
+                                                    characteristicInfo += '\n    value       ' + data.toString('hex') + ' | \'' + string + '\'';
                                                 }
-                                            },
-                                            function () {
-                                                // console.log(characteristicInfo);
-                                                characteristicIndex++;
                                                 callback();
-                                            }
-                                        ]);
+                                            });
+                                        } else {
+                                            callback();
+                                        }
                                     },
-                                    function (error) {
-                                        serviceIndex++;
+                                    function () {
+                                        // console.log(characteristicInfo);
+                                        characteristicIndex++;
                                         callback();
                                     }
-                                );
-                            });
-                        },
-                        function (err) {
-                            if (err) {
-                                console.log('line 188 error', err)
-                                peripheral.disconnect();
+                                ]);
+                            },
+                            function (error) {
+                                serviceIndex++;
+                                callback();
                             }
-                        }
-                    );
-                });
-                //[END connected]
-            });
-        // }, 1000);
+                        );
+                    });
+                },
+                function (err) {
+                    if (err) {
+                        console.log('line 188 error', err)
+                        peripheral.disconnect();
+                    }
+                }
+            );
+        });
+        //[END connected]
+    });
+    // }, 1000);
     // }
     // console.log('services and characteristics:');
 
