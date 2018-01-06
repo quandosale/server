@@ -141,7 +141,7 @@ $(document).ready(function () {
         return res;
     }
 
-    function getRandomData8(value) {
+    function getRandomData8(value,id) {
         value = value ? value : 0;
         if (data8.length > 0)
             data8 = data8.slice(1);
@@ -310,34 +310,27 @@ $(document).ready(function () {
                         plot3.setData([getRandomData3(obj.temperature)]);
                         plot3.draw();
                         break;
-                    case 2:
-                        plot3.setData([getRandomData3(obj.temperature)]);
-                        plot3.draw();
-                        break;
                     case 3:
-                        plot3.setData([getRandomData3(obj.temperature)]);
-                        plot3.draw();
-                        break;
-                    case 4:
                         plot4.setData([getRandomData4(obj.temperature)]);
                         plot4.draw();
                         break;
-                    case 5:
+                    case 4:
                         plot5.setData([getRandomData5(obj.temperature)]);
                         plot5.draw();
                         break;
-                    case 6:
+                    case 5:
                         plot6.setData([getRandomData6(obj.temperature)]);
                         plot6.draw();
                         break;
-                    case 7:
+                    case 6:
                         plot7.setData([getRandomData7(obj.temperature)]);
                         plot7.draw();
                         break;
-                    case 8:
+                    case 7:
                         plot8.setData([getRandomData8(obj.temperature)]);
                         plot8.draw();
                         break;
+                    
 
 
                 }
