@@ -5,6 +5,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Flot Examples: Real-time updates</title>
 	<link href="stylesheets/examples.css" rel="stylesheet" type="text/css">
+	<link href="stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css">
+	
 
 	<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../../excanvas.min.js"></script><![endif]-->
 	<script language="javascript" type="text/javascript" src="javascripts/jquery-2.1.4.min.js"></script>
@@ -16,67 +18,26 @@
 			// be fetched from a server
 			var devices = [];
 
-			var data = [],
-				data1 = [],
+			var data1 = [],
 				data2 = [],
+				data3 = [],
+				data4 = [],
+				data5 = [],
+				data6 = [],
+				data7 = [],
+				data8 = [];
 
-				totalPoints = 300;
+			POINT_WIDTH = 300;
 
-			function getRandomData(value) {
-				value = value ? value : 0;
-
-				if (data.length > 0)
-					data = data.slice(1);
-
-				// Do a random walk
-
-				while (data.length < totalPoints) {
-
-					var prev = data.length > 0 ? data[data.length - 1] : 50,
-						y = value; // prev + Math.random() * 10 - 5;
-
-					// if (y < 0) {
-					// 	y = 0;
-					// } else if (y > 100) {
-					// 	y = 100;
-					// }
-
-					data.push(y);
-				}
-
-				// Zip the generated y values with the x values
-
-				var res = [];
-				for (var i = 0; i < data.length; ++i) {
-					res.push([i, data[i]])
-				}
-
-				return res;
-			}
 
 			function getRandomData1(value) {
 				value = value ? value : 0;
 
 				if (data1.length > 0)
 					data1 = data1.slice(1);
-
-				// Do a random walk
-
-				while (data1.length < totalPoints) {
-
-					var prev = data1.length > 0 ? data1[data1.length - 1] : 50,
-						y = value; // prev + Math.random() * 10 - 5;
-
-					// if (y < 0) {
-					// 	y = 0;
-					// } else if (y > 100) {
-					// 	y = 100;
-					// }
-
-					data1.push(y);
+				while (data1.length < POINT_WIDTH) {
+					data1.push(value);
 				}
-
-				// Zip the generated y values with the x values
 
 				var res = [];
 				for (var i = 0; i < data1.length; ++i) {
@@ -90,29 +51,121 @@
 				value = value ? value : 0;
 
 				if (data2.length > 0)
-				data2 = data2.slice(1);
+					data2 = data2.slice(1);
 
-				// Do a random walk
-
-				while (data2.length < totalPoints) {
-
-					var prev = data2.length > 0 ? data2[data2.length - 1] : 50,
-						y = value; // prev + Math.random() * 10 - 5;
-
-					// if (y < 0) {
-					// 	y = 0;
-					// } else if (y > 100) {
-					// 	y = 100;
-					// }
-
-					data2.push(y);
+				while (data2.length < POINT_WIDTH) {
+					data2.push(value);
 				}
-
-				// Zip the generated y values with the x values
 
 				var res = [];
 				for (var i = 0; i < data2.length; ++i) {
 					res.push([i, data2[i]])
+				}
+
+				return res;
+			}
+
+			function getRandomData3(value) {
+				value = value ? value : 0;
+
+				if (data3.length > 0)
+					data3 = data3.slice(1);
+
+				while (data3.length < POINT_WIDTH) {
+					data3.push(value);
+				}
+
+				var res = [];
+				for (var i = 0; i < data3.length; ++i) {
+					res.push([i, data3[i]])
+				}
+
+				return res;
+			}
+
+			function getRandomData4(value) {
+				value = value ? value : 0;
+
+				if (data4.length > 0)
+					data4 = data4.slice(1);
+
+				while (data4.length < POINT_WIDTH) {
+					data4.push(value);
+				}
+
+				var res = [];
+				for (var i = 0; i < data4.length; ++i) {
+					res.push([i, data4[i]])
+				}
+
+				return res;
+			}
+
+			function getRandomData5(value) {
+				value = value ? value : 0;
+
+				if (data5.length > 0)
+					data5 = data5.slice(1);
+
+				while (data5.length < POINT_WIDTH) {
+					data5.push(value);
+				}
+
+				var res = [];
+				for (var i = 0; i < data5.length; ++i) {
+					res.push([i, data5[i]])
+				}
+
+				return res;
+			}
+
+			function getRandomData6(value) {
+				value = value ? value : 0;
+
+				if (data6.length > 0)
+					data6 = data6.slice(1);
+
+				while (data6.length < POINT_WIDTH) {
+					data6.push(value);
+				}
+
+				var res = [];
+				for (var i = 0; i < data6.length; ++i) {
+					res.push([i, data6[i]])
+				}
+
+				return res;
+			}
+
+			function getRandomData7(value) {
+				value = value ? value : 0;
+
+				if (data7.length > 0)
+					data7 = data7.slice(1);
+
+				while (data7.length < POINT_WIDTH) {
+					data7.push(value);
+				}
+
+				var res = [];
+				for (var i = 0; i < data7.length; ++i) {
+					res.push([i, data7[i]])
+				}
+
+				return res;
+			}
+
+			function getRandomData8(value) {
+				value = value ? value : 0;
+				if (data8.length > 0)
+					data8 = data8.slice(1);
+				while (data8.length < POINT_WIDTH) {
+					data8.push(value);
+				}
+
+				var res = [];
+				for (var i = 0; i < data8.length; ++i) {
+					res.push([i, data8[i]])
 				}
 
 				return res;
@@ -141,7 +194,7 @@
 				}
 				return 0;
 			}
-			var plot1 = $.plot("#placeholder1", [getRandomData()], {
+			var plot1 = $.plot("#placeholder1", [getRandomData1()], {
 				series: {
 					shadowSize: 0 // Drawing is faster without shadows
 				},
@@ -153,7 +206,7 @@
 					show: false
 				}
 			});
-			var plot2 = $.plot("#placeholder2", [getRandomData()], {
+			var plot2 = $.plot("#placeholder2", [getRandomData2()], {
 				series: {
 					shadowSize: 0 // Drawing is faster without shadows
 				},
@@ -165,7 +218,67 @@
 					show: false
 				}
 			});
-			var plot3 = $.plot("#placeholder3", [getRandomData()], {
+			var plot3 = $.plot("#placeholder3", [getRandomData3()], {
+				series: {
+					shadowSize: 0 // Drawing is faster without shadows
+				},
+				yaxis: {
+					min: 0,
+					max: 2500
+				},
+				xaxis: {
+					show: false
+				}
+			});
+			var plot4 = $.plot("#placeholder4", [getRandomData4()], {
+				series: {
+					shadowSize: 0 // Drawing is faster without shadows
+				},
+				yaxis: {
+					min: 0,
+					max: 2500
+				},
+				xaxis: {
+					show: false
+				}
+			});
+			var plot5 = $.plot("#placeholder5", [getRandomData5()], {
+				series: {
+					shadowSize: 0 // Drawing is faster without shadows
+				},
+				yaxis: {
+					min: 0,
+					max: 2500
+				},
+				xaxis: {
+					show: false
+				}
+			});
+			var plot6 = $.plot("#placeholder6", [getRandomData6()], {
+				series: {
+					shadowSize: 0 // Drawing is faster without shadows
+				},
+				yaxis: {
+					min: 0,
+					max: 2500
+				},
+				xaxis: {
+					show: false
+				}
+			});
+			var plot7 = $.plot("#placeholder7", [getRandomData7()], {
+				series: {
+					shadowSize: 0 // Drawing is faster without shadows
+				},
+				yaxis: {
+					min: 0,
+					max: 2500
+				},
+				xaxis: {
+					show: false
+				}
+			});
+			var plot8 = $.plot("#placeholder8", [getRandomData8()], {
 				series: {
 					shadowSize: 0 // Drawing is faster without shadows
 				},
@@ -178,19 +291,6 @@
 				}
 			});
 
-			// function update() {
-
-			// 	plot.setData([getRandomData()]);
-
-			// 	// Since the axes don't change, we don't need to call plot.setupGrid()
-
-			// 	plot.draw();
-			// 	setTimeout(update, updateInterval);
-			// }
-
-			// update();
-
-			// Add the Flot version string to the footer
 
 
 			var host = window.document.location.host.replace(/:.*/, '');
@@ -213,17 +313,47 @@
 
 						switch (index(obj.id)) {
 							case 0:
-								plot1.setData([getRandomData(obj.temperature)]);
+								plot1.setData([getRandomData1(obj.temperature)]);
 								plot1.draw();
 								break;
 							case 1:
-								plot2.setData([getRandomData1(obj.temperature)]);
+								plot2.setData([getRandomData2(obj.temperature)]);
 								plot2.draw();
 								break;
 							case 2:
-								plot3.setData([getRandomData2(obj.temperature)]);
+								plot3.setData([getRandomData3(obj.temperature)]);
 								plot3.draw();
 								break;
+							case 2:
+								plot3.setData([getRandomData3(obj.temperature)]);
+								plot3.draw();
+								break;
+							case 3:
+								plot3.setData([getRandomData3(obj.temperature)]);
+								plot3.draw();
+								break;
+							case 4:
+								plot4.setData([getRandomData4(obj.temperature)]);
+								plot4.draw();
+								break;
+							case 5:
+								plot5.setData([getRandomData5(obj.temperature)]);
+								plot5.draw();
+								break;
+							case 6:
+								plot6.setData([getRandomData6(obj.temperature)]);
+								plot6.draw();
+								break;
+							case 7:
+								plot7.setData([getRandomData7(obj.temperature)]);
+								plot7.draw();
+								break;
+							case 8:
+								plot8.setData([getRandomData8(obj.temperature)]);
+								plot8.draw();
+								break;
+
+
 						}
 					}
 
@@ -244,10 +374,15 @@
 
 	<div id="content">
 
-		<div class="demo-container">
+		<div class="demo-container clearfix">
 			<div id="placeholder1" class="demo-placeholder"></div>
 			<div id="placeholder2" class="demo-placeholder"></div>
 			<div id="placeholder3" class="demo-placeholder"></div>
+			<div id="placeholder4" class="demo-placeholder"></div>
+			<div id="placeholder5" class="demo-placeholder"></div>
+			<div id="placeholder6" class="demo-placeholder"></div>
+			<div id="placeholder7" class="demo-placeholder"></div>
+			<div id="placeholder8" class="demo-placeholder"></div>
 
 		</div>
 
