@@ -2,9 +2,9 @@
 
 var chalk = require('chalk');
 var program = require('commander');
-var login_function = require('./login').login_function;
-var start_function = require('./start').start_function;
-var stop_function = require('./stop').stop_function;
+var login_function = require('./cli/login').login_function;
+var start_function = require('./cli/start').start_function;
+var stop_function = require('./cli/stop').stop_function;
 
 program
     .arguments('<command>')
