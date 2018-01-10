@@ -88,7 +88,7 @@ client.open(function (err) {
         client.onDeviceMethod('startConnect', onStartConnect);
 
         client.on('disconnect', () => {
-            console.log('client on disconnect called.');
+            console.log(chalk.red('client on disconnect called.'));
         });
 
     }
