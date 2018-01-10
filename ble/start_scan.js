@@ -106,39 +106,37 @@ function printResultFor(op) {
         if (res) console.log(op + ' status: ' + res.constructor.name);
     };
 }
-
 var connectCallback = function (err) {
     if (err) {
         console.log('Could not connect: ' + err);
     } else {
         console.log('Client connected');
-        client.on('message', function (msg) {
-            console.log('Id: ' + msg.messageId + ' Body: ' + msg.data);
-            client.complete(msg, printResultFor('completed'));
-        });
+        // client.on('message', function (msg) {
+        //     console.log('Id: ' + msg.messageId + ' Body: ' + msg.data);
+        //     client.complete(msg, printResultFor('completed'));
+        // });
         // Create a message and send it to the IoT Hub every second
-        // setInterval(function () {
-        var arr_foundDevices_id = [];
-        for (var i = 0; i < foundDevices.length; i++) {
-            var peripheral = foundDevices[i];
-            arr_foundDevices_id.push(peripheral.id);
-        }
-        var json_str = JSON.stringify({
-            scannedDevices: arr_foundDevices_id
-        });
-        var message = new Message(json_str);
-        message.properties.add('temperatureAlert', (arr_foundDevices_id.length > 7) ? 'true' : 'false');
-        console.log("Sending message: " + message.getData());
-        client.sendEvent(message, printResultFor('send'));
-        // }, 100000);
+
     }
 };
 
 
 var uploadScanedDevice = function () {
-    client.open(connectCallback);
+    var arr_foundDevices_id = [];
+    for (var i = 0; i < foundDevices.length; i++) {
+        var peripheral = foundDevices[i];
+        arr_foundDevices_id.push(peripheral.id);
+    }
+    var json_str = JSON.stringify({
+        scannedDevices: arr_foundDevices_id
+    });
+    var message = new Message(json_str);
+    message.properties.add('temperatureAlert', (arr_foundDevices_id.length > 7) ? 'true' : 'false');
+    console.log("Sending message: " + message.getData());
+    
+    client.sendEvent(message, printResultFor('send'));
 }
-
+client.open(connectCallback);
 module.exports = {
     start_scan: start_scan
 }
