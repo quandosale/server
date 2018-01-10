@@ -87,5 +87,9 @@ client.open(function (err) {
         client.onDeviceMethod('startScan', onStartScan);
         client.onDeviceMethod('startConnect', onStartConnect);
 
+        client.on('disconnect', () => {
+            console.log('client on disconnect called.');
+        });
+
     }
 });
