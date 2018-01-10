@@ -28,6 +28,7 @@ var foundDevices = [];
 var isScanning = false;
 
 var start_scan = function () {
+    console.log('start_scan method');
     noble.on('stateChange', function (state) {
         console.log('stateChange', state);
         if (state === 'poweredOn') {
