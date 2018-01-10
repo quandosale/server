@@ -89,7 +89,7 @@ var exist = function (_peripheral) {
 
 
 //configure azure
-var config = require('../config/config');
+var config = require('../config');
 
 var clientFromConnectionString = require('azure-iot-device-mqtt').clientFromConnectionString;
 var Message = require('azure-iot-device').Message;
