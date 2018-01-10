@@ -8,8 +8,15 @@
   },
   "author": "wangming89989@mail.com",
   "license": "ISC",
+  "bin": {
+    "ka": "./index.js"
+  },
   "dependencies": {
     "async": "^2.6.0",
+    "bluetooth-hci-socket": "^0.5.1",
+    "chalk": "^2.3.0",
+    "commander": "^2.12.2",
+    "daemonize2": "^0.4.2",
     "express": "^4.16.2",
     "moment": "^2.20.1",
     "noble": "^1.8.1",
