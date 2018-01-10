@@ -13,9 +13,11 @@
   },
   "dependencies": {
     "async": "^2.6.0",
+    "azure-iot-device-mqtt": "^1.3.0",
     "bluetooth-hci-socket": "^0.5.1",
     "chalk": "^2.3.0",
     "commander": "^2.12.2",
+    "daemon": "^1.1.0",
     "daemonize2": "^0.4.2",
     "express": "^4.16.2",
     "moment": "^2.20.1",

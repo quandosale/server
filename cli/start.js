@@ -1,5 +1,5 @@
 var daemon = require("daemonize2").setup({
-    main: "../start_server.js",
+    main: "start_server.js",
     name: "sampleapp",
     pidfile: "sampleapp.pid"
 });

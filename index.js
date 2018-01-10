@@ -26,7 +26,6 @@ program
                 console.log(chalk.green("stop?"));
                 stop_function(program);
                 break;
-
         }
     })
     .parse(process.argv);

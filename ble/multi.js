@@ -55,21 +55,25 @@ var CONNECTING_DURATION = 6 * 1000;
 
 var foundDevices = [];
 var isScanning = false;
-noble.on('stateChange', function (state) {
-    console.log('stateChange', state);
-    if (state === 'poweredOn') {
-        //
-        // Once the BLE radio has been powered on, it is possible
-        // to begin scanning for services. Pass an empty array to
-        // scan for all services (uses more time and power).
-        //
-        startScanningDuration();
+var entry = function () {
+    noble.on('stateChange', function (state) {
+        console.log('stateChange', state);
+        if (state === 'poweredOn') {
+            //
+            // Once the BLE radio has been powered on, it is possible
+            // to begin scanning for services. Pass an empty array to
+            // scan for all services (uses more time and power).
+            //
+            startScanningDuration();
 
-    } else {
-        console.log('stopScanning...');
-        noble.stopScanning();
-    }
-});
+        } else {
+            console.log('stopScanning...');
+            noble.stopScanning();
+        }
+    });
+};
+
+entry(); // for 'sudo node multi.js'
 
 var startScanningDuration = function () {
     if (!isScanning) {
@@ -291,4 +295,8 @@ var ecgTransform = function (byte1, byte2) {
     }
 
     return ecgVal;
+}
+
+module.exports = {
+    entry: entry
 }
