@@ -31,8 +31,8 @@ function printResultFor(op) {
 }
 
 function onStartScan(request, response) {
-    // console.log(request.payload);
-    // console.log(chalk.red('command: onStartScan'));
+    console.log(request.payload);
+    console.log(chalk.red('command: onStartScan'));
     // setInterval(function () {
     //     var foundDevices = ["AA:bb:cc:dd,EA:bb:cc:dd"];
     //     var json_str = JSON.stringify({
