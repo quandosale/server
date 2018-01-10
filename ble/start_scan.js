@@ -32,7 +32,7 @@ var start_scan = function () {
     // noble.on('stateChange', function (state) {
     //     console.log('stateChange', state);
     //     if (state === 'poweredOn') {
-            startScanningDuration();
+    startScanningDuration();
     //     } else {
     //         console.log('stopScanning...');
     //         noble.stopScanning();
@@ -49,8 +49,8 @@ var startScanningDuration = function () {
     setTimeout(function () {
         console.log(foundDevices.length);
         // if (foundDevices.length == 0) {
-            // startScanningDuration();
-            // return;
+        // startScanningDuration();
+        // return;
         // }
 
         noble.stopScanning(function (err) {
@@ -118,12 +118,16 @@ var connectCallback = function (err) {
         });
         // Create a message and send it to the IoT Hub every second
         // setInterval(function () {
-
+        var arr_foundDevices_id = [];
+        for (var i = 0; i < foundDevices.length; i++) {
+            var peripheral = foundDevices[i];
+            arr_foundDevices_id.push(peripheral.id);
+        }
         var json_str = JSON.stringify({
-            scannedDevices: foundDevices
+            scannedDevices: arr_foundDevices_id
         });
         var message = new Message(json_str);
-        message.properties.add('temperatureAlert', (foundDevices.length > 7) ? 'true' : 'false');
+        message.properties.add('temperatureAlert', (arr_foundDevices_id.length > 7) ? 'true' : 'false');
         console.log("Sending message: " + message.getData());
         client.sendEvent(message, printResultFor('send'));
         // }, 100000);
