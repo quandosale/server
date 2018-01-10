@@ -29,15 +29,15 @@ var isScanning = false;
 
 var start_scan = function () {
     console.log('start_scan method');
-    noble.on('stateChange', function (state) {
-        console.log('stateChange', state);
-        if (state === 'poweredOn') {
+    // noble.on('stateChange', function (state) {
+    //     console.log('stateChange', state);
+    //     if (state === 'poweredOn') {
             startScanningDuration();
-        } else {
-            console.log('stopScanning...');
-            noble.stopScanning();
-        }
-    });
+    //     } else {
+    //         console.log('stopScanning...');
+    //         noble.stopScanning();
+    //     }
+    // });
 };
 
 var startScanningDuration = function () {
