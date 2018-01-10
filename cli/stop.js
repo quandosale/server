@@ -1,6 +1,3 @@
-var chalk = require('chalk');
-
-var path = require('path');
 var daemon = require("daemonize2").setup({
     main: "start_server.js",
     name: "sampleapp",
